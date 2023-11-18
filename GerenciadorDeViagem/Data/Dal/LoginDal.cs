@@ -1,17 +1,22 @@
-﻿using GerenciadorDeViagem.Model;
+﻿using GerenciadorDeViagem.Data.Dal.Interfaces;
+using GerenciadorDeViagem.Data.Interfaces;
+using GerenciadorDeViagem.Model;
 using GerenciadorDeViagem.Model.Enum;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Options;
 using System.Data;
 
 namespace GerenciadorDeViagem.Data.Dao
 {
-    public class LoginDal
+    public class LoginDal : ILoginDal
     {
-        private readonly Banco _connection;
+        private readonly IBanco _connection;
         private readonly SqlCommand _command;
-        public LoginDal()
+    
+        public LoginDal([FromServices] IBanco connection)
         {
-            _connection = new Banco();
+            _connection = connection;
             _command = new SqlCommand();
             _command.CommandType = CommandType.Text;
         }
@@ -72,9 +77,15 @@ namespace GerenciadorDeViagem.Data.Dao
                 _command.Parameters.AddWithValue("@Senha", SqlDbType.Int).SqlValue = senha;
 
 
-                await _command.ExecuteNonQueryAsync();
+                var linhasAfetadas = await _command.ExecuteNonQueryAsync();
+
+                if(linhasAfetadas <= 0)
+                        return false;
+
+
 
                 return true;
+                
             }
             catch (SqlException)
             {

@@ -1,13 +1,14 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using GerenciadorDeViagem.Data.Interfaces;
+using Microsoft.Data.SqlClient;
+
 using System.Data;
 
 namespace GerenciadorDeViagem.Data
 {
-    public class Banco 
+    public class Banco : IBanco
     {
 
         private SqlConnection conection;
-
         public Banco()
         {
             conection = new SqlConnection(Program.connectionString);

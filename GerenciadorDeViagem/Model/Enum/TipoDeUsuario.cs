@@ -2,7 +2,7 @@
 {
     public enum TipoDeUsuario : byte
     {
-        Usuario = 1,
-        Administrador
+        Administrador = 1,
+        Usuario
     };
 }

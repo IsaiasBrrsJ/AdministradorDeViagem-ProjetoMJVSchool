@@ -1,4 +1,5 @@
-﻿using GerenciadorDeViagem.Data.Dao;
+﻿using GerenciadorDeViagem.Data.Dal.Interfaces;
+using GerenciadorDeViagem.Data.Dao;
 using GerenciadorDeViagem.Model;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
@@ -9,11 +10,11 @@ namespace GerenciadorDeViagem.Controllers
     [Route("Api/[controller]")]
     public class ViagemController : ControllerBase
     {
-        private readonly ViagemDal _viagemDal;
+        private readonly IViagemDal _viagemDal;
 
-        public ViagemController()
+        public ViagemController([FromServices] IViagemDal viagemDal)
         {
-            _viagemDal = new ViagemDal();
+            _viagemDal = viagemDal;
         }
 
         [HttpPost("CadastrarViagem")]
@@ -39,10 +40,28 @@ namespace GerenciadorDeViagem.Controllers
             if (viagemSituacao is null)
                 return NotFound();
 
+            return Ok(viagemSituacao);
+        }
+        [HttpPatch("CancelaViagem/{Id}")]
+        public async Task<IActionResult> CancelaViagem([FromRoute] int Id)
+        {
+            var viagemCancelada = await _viagemDal.CancelarViagem(Id);
 
-            var viagemJson =  JsonSerializer.Serialize(viagemSituacao);
+            if(viagemCancelada is false)
+                return NotFound();
 
-            return Ok(viagemJson);
+            return Ok(new {OK = "Viagem cancelada com sucesso"});
+        }
+
+        [HttpPatch("Aprovar/{Id}")]
+        public async Task<IActionResult> AprovarViagem([FromRoute] int Id)
+        {
+            var viagemAprovada = await _viagemDal.CancelarViagem(Id);
+
+            if (viagemAprovada is false)
+                return NotFound();
+
+            return Ok(new { OK = "Viagem Aprovada com sucesso" });
         }
     }
 }

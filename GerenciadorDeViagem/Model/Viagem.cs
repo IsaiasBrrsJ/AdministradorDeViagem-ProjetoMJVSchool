@@ -28,6 +28,7 @@ namespace GerenciadorDeViagem.Model
         public TipoTransporte TipoTransporte { get; private set; }
         public DateTime DataDaSolicitacao { get; private set; }
 
+        [JsonIgnore]
         public DateTime DataAprovacaoRecusa { get; set; }
 
         [JsonIgnore]

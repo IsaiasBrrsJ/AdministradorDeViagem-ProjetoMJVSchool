@@ -4,6 +4,7 @@
     {
         Aprovado = 1,
         Recusado,
-        Pendente
+        Pendente,
+        Cancelada
     }
 }

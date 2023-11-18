@@ -2467,9 +2467,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Administrador\\OneDrive - UFN - Universidade Franciscana\\Aula-C#\\GerenciadorDeViagem\\GerenciadorDeViagem.csproj",
-      "projectName": "GerenciadorDeViagem",
-      "projectPath": "C:\\Users\\Administrador\\OneDrive - UFN - Universidade Franciscana\\Aula-C#\\GerenciadorDeViagem\\GerenciadorDeViagem.csproj",
+      "projectUniqueName": "C:\\Users\\Administrador\\OneDrive - UFN - Universidade Franciscana\\Aula-C#\\GerenciadorDeViagem\\GerenciadorDeViagem.API.csproj",
+      "projectName": "GerenciadorDeViagem.API",
+      "projectPath": "C:\\Users\\Administrador\\OneDrive - UFN - Universidade Franciscana\\Aula-C#\\GerenciadorDeViagem\\GerenciadorDeViagem.API.csproj",
       "packagesPath": "C:\\Users\\Administrador\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\Administrador\\OneDrive - UFN - Universidade Franciscana\\Aula-C#\\GerenciadorDeViagem\\obj\\",
       "projectStyle": "PackageReference",

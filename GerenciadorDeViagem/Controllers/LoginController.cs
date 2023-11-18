@@ -1,7 +1,10 @@
-﻿using GerenciadorDeViagem.Data.Dao;
+﻿using GerenciadorDeViagem.Data;
+using GerenciadorDeViagem.Data.Dal.Interfaces;
+using GerenciadorDeViagem.Data.Dao;
 using GerenciadorDeViagem.Model;
 using GerenciadorDeViagem.Model.Enum;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using System.Text.Json;
 
 namespace GerenciadorDeViagem.Controllers
@@ -11,10 +14,11 @@ namespace GerenciadorDeViagem.Controllers
     public class LoginController : ControllerBase
     {
         private record UsuarioLogado(int matricula, TipoDeUsuario tipoUsuario);
-        private readonly LoginDal _loginDal;
-        public LoginController()
+        private readonly ILoginDal _loginDal;
+       
+        public LoginController([FromServices] ILoginDal loginDal)
         {
-            _loginDal = new LoginDal();
+            _loginDal = loginDal;
         }
 
         [HttpPost("Login")]

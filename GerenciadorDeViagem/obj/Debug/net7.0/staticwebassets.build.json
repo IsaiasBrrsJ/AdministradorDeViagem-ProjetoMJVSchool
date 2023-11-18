@@ -1,8 +1,8 @@
 {
   "Version": 1,
-  "Hash": "CPpBA6RJAk62H4Qwcz/vDTna+Fb71fTSEPwzJogZhTA=",
-  "Source": "GerenciadorDeViagem",
-  "BasePath": "_content/GerenciadorDeViagem",
+  "Hash": "LtqTyz7ZiVAScVNhdq4tGAaP1JTKfeBFlgQkSQFBbzs=",
+  "Source": "GerenciadorDeViagem.API",
+  "BasePath": "_content/GerenciadorDeViagem.API",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "4hjdc3q40gCY/has0ET6xm5sTfu/Vu9q95088EG4IAH4PlAhAIMnfnacbdpVjMRJNttxx3IIvGyvV8cPLU4MHg==",
+  "dgSpecHash": "PGW8WcRCuxmykZw9P4HvlK4S07Fb1umfrtXuAwv5v58nkSYzq9PULNl03hLh2gylnJEQP1/yYpMhUlte4gp1sQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Administrador\\OneDrive - UFN - Universidade Franciscana\\Aula-C#\\GerenciadorDeViagem\\GerenciadorDeViagem.csproj",
+  "projectFilePath": "C:\\Users\\Administrador\\OneDrive - UFN - Universidade Franciscana\\Aula-C#\\GerenciadorDeViagem\\GerenciadorDeViagem.API.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Administrador\\.nuget\\packages\\azure.core\\1.25.0\\azure.core.1.25.0.nupkg.sha512",
     "C:\\Users\\Administrador\\.nuget\\packages\\azure.identity\\1.7.0\\azure.identity.1.7.0.nupkg.sha512",

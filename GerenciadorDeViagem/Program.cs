@@ -1,4 +1,9 @@
 
+using GerenciadorDeViagem.Data;
+using GerenciadorDeViagem.Data.Dal.Interfaces;
+using GerenciadorDeViagem.Data.Dao;
+using GerenciadorDeViagem.Data.Interfaces;
+
 namespace GerenciadorDeViagem
 {
     public class Program
@@ -16,9 +21,16 @@ namespace GerenciadorDeViagem
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-             connectionString = builder.Configuration.GetConnectionString("sqlServer")!;
+           connectionString = builder.Configuration.GetConnectionString("sqlServer")!;
 
-            
+            builder.Services.Configure<ConfigBanco>(builder.Configuration.GetSection("SqlServer"));
+
+            builder.Services.AddScoped<ILoginDal, LoginDal>();
+            builder.Services.AddScoped<IBanco, Banco>();
+            builder.Services.AddScoped<IAdministradorDal, AdministradorDal>();
+            builder.Services.AddScoped<IViagemDal, ViagemDal>();
+           
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

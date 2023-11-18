@@ -1,4 +1,5 @@
 ﻿using GerenciadorDeViagem.Data;
+using GerenciadorDeViagem.Data.Dal.Interfaces;
 using GerenciadorDeViagem.Data.Dao;
 using GerenciadorDeViagem.Model;
 using GerenciadorDeViagem.Model.Enum;
@@ -13,10 +14,10 @@ namespace GerenciadorDeViagem.Controllers
     [ApiController]
     public class AdministradorController : ControllerBase
     {
-        private readonly AdministradorDal _administradorDal;
-        public AdministradorController()
+        private readonly IAdministradorDal _administradorDal;
+        public AdministradorController([FromServices] IAdministradorDal administradorDal)
         {
-           _administradorDal = new AdministradorDal();
+            _administradorDal = administradorDal;
         }
         
         [HttpPost("CadastroUsuario")]
@@ -24,12 +25,15 @@ namespace GerenciadorDeViagem.Controllers
         nameof(usuario.Email), nameof(usuario.TipoDeUsuario))] Usuario usuario)
         {
            
-            var cadastroNoSistema = await _administradorDal.CriaUsuarioNoSistema(usuario);
+            var cadastrouNoSistema = await _administradorDal.CriaUsuarioNoSistema(usuario);
 
-            if (cadastroNoSistema is false)
+            if (cadastrouNoSistema is false)
                 return BadRequest(new {BadRequest = "Erro ao cadastrar usuário"});
 
-            return Ok(new { OK = "Cadastro realizado com sucesso" });
+            var uri = new Uri($"/api/Administrador/CadastroUsuario/{usuario.Matricula}", UriKind.Relative);
+
+            return Created(uri, new { Success = "Cadastro realizado com sucesso" });
+       
         }
 
 
@@ -38,9 +42,11 @@ namespace GerenciadorDeViagem.Controllers
         {
            var user =  await _administradorDal.ConsultarUsuarioNoSistema(matricula);
 
-            var userJson = JsonSerializer.Serialize(user);
+            if (user is null)
+                return NotFound();
 
-            return Ok(userJson);
+
+            return Ok(user);
         }
 
         [HttpDelete("DeletaUsuario/{matricula}")]

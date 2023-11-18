@@ -11,7 +11,7 @@ namespace GerenciadorDeViagem.Model
             NomeCompleto = nomeCompleto;
             Email = email;
             TipoDeUsuario = tipoDeUsuario;
-           GerarSenha();
+            GerarSenha();
         }
 
         public int Id { get; private set; }
@@ -24,27 +24,32 @@ namespace GerenciadorDeViagem.Model
         private void GerarSenha()
         {
             var senha = String.Empty;
+            var random = new Random();
+
             var caracteresEspeciais = new[] { '@', '-', ')', '(', '%', '#', '*', '#', '_' };
             var alfabeto = new[]
             {
                 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
-                 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
+                'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
             };
-            var letraMinuscula = alfabeto[new Random().Next(0, alfabeto.Length)].ToString().ToLower();
-            var numero = new Random().Next(0, 100).ToString();
-            var letraMaiuscula = alfabeto[new Random().Next(0, alfabeto.Length)];
-            var caracteresEspecial = caracteresEspeciais[new Random().Next(0, caracteresEspeciais.Length)];
 
-            var geraSenha = new object[]{ numero , letraMinuscula, letraMaiuscula, caracteresEspecial };
-            
-            while (senha.Length < 12)
-            {   
-               
-                senha += geraSenha[new Random().Next(0, geraSenha.Length)];  
+            var letraMinuscula = alfabeto[random.Next(0, alfabeto.Length)].ToString().ToLower();
+            var numero = random.Next(0, 9).ToString();
+            var letraMaiuscula = alfabeto[random.Next(0, alfabeto.Length)];
+            var caracteresEspecial = caracteresEspeciais[random.Next(0, caracteresEspeciais.Length)];
+
+            var geraSenha = new object[] { numero, letraMinuscula, letraMaiuscula, caracteresEspecial };
+
+            int tamanhoMaximoDaSenha = 0;
+
+            while (tamanhoMaximoDaSenha < 12)
+            {
+                senha += geraSenha[random.Next(0, geraSenha.Length)];
+                tamanhoMaximoDaSenha++;
             }
 
             Senha = senha;
-            senha = String.Empty;
+
         }
 
     }

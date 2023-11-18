@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34024.191
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GerenciadorDeViagem", "GerenciadorDeViagem.csproj", "{06C3893D-9ACD-40A2-B803-BAA9808755C1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GerenciadorDeViagem.API", "GerenciadorDeViagem.API.csproj", "{06C3893D-9ACD-40A2-B803-BAA9808755C1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GerenciadorDeViagem.WEB", "..\WebGerenciadorDeViagem\GerenciadorDeViagem.WEB.csproj", "{CBFB4FE7-04D3-4158-9C27-94E254475857}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{06C3893D-9ACD-40A2-B803-BAA9808755C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{06C3893D-9ACD-40A2-B803-BAA9808755C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{06C3893D-9ACD-40A2-B803-BAA9808755C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CBFB4FE7-04D3-4158-9C27-94E254475857}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CBFB4FE7-04D3-4158-9C27-94E254475857}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CBFB4FE7-04D3-4158-9C27-94E254475857}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CBFB4FE7-04D3-4158-9C27-94E254475857}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
