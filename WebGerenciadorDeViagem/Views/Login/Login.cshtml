@@ -1,0 +1,100 @@
+﻿
+@{
+    Layout = null;
+}
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Open+Sans&display=swap" rel="stylesheet">
+<style>
+    :root {
+        font-size: 62.5%;
+    }
+
+    * {
+        padding: 0;
+        border: 0;
+        margin: 0;
+        box-sizing: border-box;
+    }
+
+    .login-content {
+        background-color: antiquewhite;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #Login {
+        border-radius: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 10rem;
+    }
+
+    .form-content input {
+        font-size: 2.2rem;
+        border-radius: .5rem;
+        border: 1px solid black;
+        height: 3rem;
+    }
+
+    .form-content label {
+        font-size: 2.2rem;
+        border-radius: .5rem;
+        display: block;
+        padding: .5rem;
+        text-align: start;
+        font-family: 'Bebas Neue', sans-serif;
+        line-height: 5rem;
+    }
+
+    .LoginSubmit {
+        margin-top: 1rem;
+        padding-top: 1rem;
+        width: 100%;
+        background-color: red;
+        text-align: center;
+        border-radius: .5rem;
+    }
+
+        .LoginSubmit input {
+            background: none;
+            font-size: 1.7rem;
+            color: black;
+            cursor: pointer;
+            padding: 0 9rem;
+            color: white;
+        }
+
+    @@media (min-width: 500px) {
+        #Login {
+            border: 1px solid black;
+        }
+    }
+</style>
+
+<div class="login-content">
+    <section id="Login">
+        <form method="post" >
+            <div class="form-content" onsubmit="validaCampos()">
+                <label for="matricula">Matricula</label>
+                <input id="matricula" name="matricula"  type="number" placeholder="Digite sua matrícula" />
+            </div>
+            <div class="form-content">
+                <label for="senha">Senha</label>
+                <input id="senha" name="senha" type="password" placeholder="Digite sua senha" />
+            </div>
+            <div class="LoginSubmit login">
+                <input type="submit" value="Login" />
+            </div>
+            <div class="LoginSubmit reset">
+                <input type="reset"  value="Limpar" />
+            </div>
+            <br />
+        </form>
+    </section>
+</div>
