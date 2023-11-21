@@ -16,6 +16,10 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = C:\Users\Administrador\OneDrive - UFN - Universidade Franciscana\Aula-C#\WebGerenciadorDeViagem
 build_property._RazorSourceGeneratorDebug = 
 
+[C:/Users/Administrador/OneDrive - UFN - Universidade Franciscana/Aula-C\#/WebGerenciadorDeViagem/Pages/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX1ZhbGlkYXRpb25TY3JpcHRzUGFydGlhbC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/Administrador/OneDrive - UFN - Universidade Franciscana/Aula-C\#/WebGerenciadorDeViagem/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
@@ -28,12 +32,40 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTG9naW5cTG9naW4uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/Administrador/OneDrive - UFN - Universidade Franciscana/Aula-C\#/WebGerenciadorDeViagem/Views/Login/MudarSenha.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTG9naW5cTXVkYXJTZW5oYS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/Administrador/OneDrive - UFN - Universidade Franciscana/Aula-C\#/WebGerenciadorDeViagem/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/Administrador/OneDrive - UFN - Universidade Franciscana/Aula-C\#/WebGerenciadorDeViagem/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Administrador/OneDrive - UFN - Universidade Franciscana/Aula-C\#/WebGerenciadorDeViagem/Views/Viagens/AprovarViagem.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVmlhZ2Vuc1xBcHJvdmFyVmlhZ2VtLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Administrador/OneDrive - UFN - Universidade Franciscana/Aula-C\#/WebGerenciadorDeViagem/Views/Viagens/CancelarViagem.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVmlhZ2Vuc1xDYW5jZWxhclZpYWdlbS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Administrador/OneDrive - UFN - Universidade Franciscana/Aula-C\#/WebGerenciadorDeViagem/Views/Viagens/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVmlhZ2Vuc1xDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Administrador/OneDrive - UFN - Universidade Franciscana/Aula-C\#/WebGerenciadorDeViagem/Views/Viagens/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVmlhZ2Vuc1xEZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Administrador/OneDrive - UFN - Universidade Franciscana/Aula-C\#/WebGerenciadorDeViagem/Views/Viagens/PaginaAdministrador.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVmlhZ2Vuc1xQYWdpbmFBZG1pbmlzdHJhZG9yLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Administrador/OneDrive - UFN - Universidade Franciscana/Aula-C\#/WebGerenciadorDeViagem/Views/Viagens/PaginaUsuario.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVmlhZ2Vuc1xQYWdpbmFVc3VhcmlvLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/Administrador/OneDrive - UFN - Universidade Franciscana/Aula-C\#/WebGerenciadorDeViagem/Views/_ViewImports.cshtml]

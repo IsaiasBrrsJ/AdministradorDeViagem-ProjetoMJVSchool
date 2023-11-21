@@ -5,6 +5,6 @@
         Task<Object> Obter(string endpoint);
         Task<Object> Enviar(string endpoint, StringContent dados);
         Task Deletar(string endpoint);
-        Task Atualizar(string endpoint);
+        Task<bool> Atualizar(string endpoint, StringContent dados);
     }
 }

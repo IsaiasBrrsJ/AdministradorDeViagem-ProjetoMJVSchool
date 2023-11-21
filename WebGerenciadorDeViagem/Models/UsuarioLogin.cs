@@ -1,4 +1,4 @@
-﻿using System.Text.Json.Serialization;
+﻿using GerenciadorDeViagem.WEB.Models.Enum;
 
 namespace GerenciadorDeViagem.WEB.Models
 {

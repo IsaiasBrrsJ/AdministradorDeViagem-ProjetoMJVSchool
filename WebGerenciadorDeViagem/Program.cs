@@ -1,6 +1,10 @@
-using GerenciadorDeViagem.WEB.Models.Api;
+﻿using GerenciadorDeViagem.WEB.Models.Api;
 using GerenciadorDeViagem.WEB.Models.Api.Interfaces;
 using GerenciadorDeViagem.WEB.Models.EndPoints;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using GerenciadorDeViagem.WEB.Data;
+using System.Globalization;
 
 namespace WebGerenciadorDeViagem
 {
@@ -9,16 +13,23 @@ namespace WebGerenciadorDeViagem
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            builder.Services.AddDbContext<GerenciadorDeViagemWEBContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("GerenciadorDeViagemWEBContext") ?? throw new InvalidOperationException("Connection string 'GerenciadorDeViagemWEBContext' not found.")));
+
+
+            builder.Services.Configure<LoginEndPoint>(builder.Configuration.GetSection("EndPoints"));
+            builder.Services.Configure<ViagemEndPoint>(builder.Configuration.GetSection("EndPoints"));
+
+            builder.Services.AddScoped<ILoginApi, LoginApi>();
+            builder.Services.AddScoped<IApiMetodos, ApiCliente>();
+            builder.Services.AddScoped<IUsuario, UsuarioApi>();
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
-          
-            builder.Services.Configure<LoginEndPoint>(builder.Configuration.GetSection("EndPoints"));
-            builder.Services.AddScoped<ILoginApi, LoginApi>();
-            builder.Services.AddScoped<IApiMetodos, ApiCliente>();
+
+            
 
             var app = builder.Build();
-            
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())

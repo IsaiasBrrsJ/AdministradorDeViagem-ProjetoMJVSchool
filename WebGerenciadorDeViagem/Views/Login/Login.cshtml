@@ -78,23 +78,40 @@
 </style>
 
 <div class="login-content">
-    <section id="Login">
-        <form method="post" >
-            <div class="form-content" onsubmit="validaCampos()">
-                <label for="matricula">Matricula</label>
-                <input id="matricula" name="matricula"  type="number" placeholder="Digite sua matrícula" />
-            </div>
-            <div class="form-content">
-                <label for="senha">Senha</label>
-                <input id="senha" name="senha" type="password" placeholder="Digite sua senha" />
-            </div>
-            <div class="LoginSubmit login">
-                <input type="submit" value="Login" />
-            </div>
-            <div class="LoginSubmit reset">
-                <input type="reset"  value="Limpar" />
-            </div>
-            <br />
-        </form>
-    </section>
+ <section id="Login">
+    <form id="loginForm" method="post">
+       <div class="form-content" onsubmit="validaCampos()">
+         <label for="matricula">Matricula</label>
+         <input id="matricula" name="matricula" type="number" placeholder="Digite sua matrícula" />
+      </div>
+      <div class="form-content">
+        <label for="senha">Senha</label>
+        <input id="senha" name="senha" type="password" placeholder="Digite sua senha" />
+      </div>
+      <div class="LoginSubmit login">
+        <input type="submit" value="Login" />
+      </div>
+      <div class="LoginSubmit reset">
+       <input type="reset" value="Limpar" />
+      </div>
+       <br />
+       <br />
+       <br />
+      <div class="LoginSubmit trocarSenha">
+        <input type="submit" value="MudarSenha" asp-action="MudarSenha" asp-controller="Login" onclick="mudarMetodo()" />
+      </div>
+    </form>
+  </section>
 </div>
+
+
+<script>
+    function mudarMetodo() {
+
+        var form = document.getElementById('loginForm');
+
+        form.method = 'get';
+
+        form.submit();
+    }
+</script>

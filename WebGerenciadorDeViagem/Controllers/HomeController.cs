@@ -14,9 +14,14 @@ namespace WebGerenciadorDeViagem.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index(UsuarioLogin userLogin)
+        public async Task<IActionResult> Index(UsuarioLogin usuarioLogin)
         {
-            return View(userLogin);
+            if (usuarioLogin.Matricula == 0)
+                return RedirectToAction("Login", "Login");
+
+            
+
+            return View();
         }
 
         public IActionResult Privacy()

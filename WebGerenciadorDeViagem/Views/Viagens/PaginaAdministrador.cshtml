@@ -1,0 +1,154 @@
+﻿@model IEnumerable<GerenciadorDeViagem.WEB.Models.Viagem>
+
+@{
+    ViewData["Title"] = "Viagens Agendadas";
+}
+
+@{
+    var matriculaUserLogado = Model.Select(e => e.MatriculaUserLogado).First();
+
+}
+<h4>Viagens Agendadas | Administrador</h4>
+
+<style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+
+    .table{
+        overflow-x:auto
+    }
+
+    td > button{
+        text-align:center;
+        display:block;
+    }
+    th, td {
+        padding: 8px;
+        text-align: left;
+    }
+
+    @@media (max-width: 568px) {
+        thead {
+            display: none;
+        }
+
+        th, td {
+            display: block;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        th {
+            text-align: center;
+        }
+
+
+    }
+</style>
+<div class="table">
+    <table class="table table-striped table-hover table-sm" style="width:100%">
+        <thead>
+            <tr>
+            <tr>
+                <th>
+                        @Html.DisplayNameFor(model => model.Destino)
+                </th>
+                <th>
+                        @Html.DisplayNameFor(model => model.DataIda)
+                </th>
+                <th>
+                        @Html.DisplayNameFor(model => model.DataVolta)
+                </th>
+                <th>
+                        @Html.DisplayNameFor(model => model.TipoTransporte)
+                </th>
+                <th>
+                        @Html.DisplayNameFor(model => model.DataDaSolicitacao)
+                </th>
+                    @*  <th>
+                @Html.DisplayNameFor(model => model.DataAprovacaoRecusa)
+                </th> *@
+
+                <th>
+                        @Html.DisplayNameFor(model => model.MatriculaAprovador)
+                </th>
+                <th>
+                        @Html.DisplayNameFor(model => model.MatriculaSolicitante)
+                </th>
+                <th>
+                        @Html.DisplayNameFor(model => model.StatusViagem)
+                </th>
+  
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Destino)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DataIda)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DataVolta)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TipoTransporte)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DataDaSolicitacao)
+                    </td>
+                    @*  <td>
+                @Html.DisplayFor(modelItem => item.DataAprovacaoRecusa)
+                </td> *@
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MatriculaAprovador)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MatriculaSolicitante)
+                    </td>
+                    <td>
+                        @if ((item.DataIda < DateTime.Now) && (item.StatusViagem != GerenciadorDeViagem.WEB.Models.Enum.StatusViagem.Cancelada || item.StatusViagem != GerenciadorDeViagem.WEB.Models.Enum.StatusViagem.Aprovado || item.StatusViagem != GerenciadorDeViagem.WEB.Models.Enum.StatusViagem.Pendente))
+                        {
+                            <button disabled type="button" class="btn btn-danger">Tempo Excedido</button>
+                        }
+                        else if (item.StatusViagem == GerenciadorDeViagem.WEB.Models.Enum.StatusViagem.Aprovado)
+                        {
+                            <button disabled type="button" class="btn btn-success">Viagem Aprovada</button>
+                        }
+                        else if (item.StatusViagem == GerenciadorDeViagem.WEB.Models.Enum.StatusViagem.Cancelada)
+                        {
+                            <button disabled type="button" class="btn btn-danger">Viagem Cancelada</button>
+                        }
+                        else if (item.MatriculaUserLogado != item.MatriculaAprovador)
+                        {
+                            <button disabled type="button" class="btn btn-dark">Em aprovação </button>
+                        }
+                        else
+                        {
+                            <a asp-action="AprovarViagem" asp-route-id="@item.Id" asp-route-matriculaAprovador="@item.MatriculaAprovador"><button type="button" class="btn btn-success">Aprovar</button></a>
+                            <a asp-action="CancelarViagem" asp-route-id="@item.Id" asp-route-matriculaAprovador="@item.MatriculaAprovador"><br /> <br /><button type="button" class="btn btn-danger">Cancelar</button></a>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<a asp-action="Create" asp-route-matricula="@matriculaUserLogado"><button type="button" class="btn btn-dark">Marcar Viagem</button></a>
+<style>
+    .page-item.active .page-link {
+    
+        color: #fff;
+        background-color: black;
+        border-color: black;
+        border-radius: 3px;
+    }
+</style>

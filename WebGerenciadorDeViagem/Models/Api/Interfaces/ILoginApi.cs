@@ -3,6 +3,6 @@
     public interface ILoginApi
     {
         Task<UsuarioLogin> Login(UsuarioLogin usuarioLogin);
-        Task<UsuarioLogin> AlterarSenha(int matricula, string senha);
+        Task<bool> AlterarSenha(int matricula, string senha, string novaSenha);
     }
 }

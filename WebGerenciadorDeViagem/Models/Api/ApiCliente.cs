@@ -1,40 +1,56 @@
 ﻿using GerenciadorDeViagem.WEB.Models.Api.Interfaces;
+using System.Text.Json;
 
 namespace GerenciadorDeViagem.WEB.Models.Api
 {
     public class ApiCliente : IApiMetodos
     {
         private readonly HttpClient _httpClient;
-        private readonly IApiMetodos _apiMetodos;
-        public ApiCliente(IApiMetodos apiMetodos)
+       
+        public ApiCliente()
         {
             _httpClient = new HttpClient();
-            _apiMetodos = apiMetodos;
-
         }
         public async Task<object> Obter(string endpoint)
         {
             HttpResponseMessage response = await _httpClient.GetAsync(endpoint);
 
-            return null!;
+            if (!response.IsSuccessStatusCode)
+                return null!;
+
+
+            var dadosRetorno = response.Content.ReadAsStringAsync().Result;
+
+            return dadosRetorno;
         }
 
         public async Task<object> Enviar(string endpoint, StringContent dados)
         {
+            
             HttpResponseMessage response = await _httpClient.PostAsync(endpoint, dados);
-            return null!;
+
+            if (!response.IsSuccessStatusCode)
+                return null!;
+
+            var dadosRetorno = response.Content.ReadAsStringAsync().Result;
+
+            return dadosRetorno;
         }
-        public async  Task Atualizar(string endpoint)
+
+        public async Task<bool> Atualizar(string endpoint, StringContent dados)
         {
-            throw new NotImplementedException();
+            HttpResponseMessage response = await _httpClient.PatchAsync(endpoint, dados);
+
+            if (!response.IsSuccessStatusCode)
+                return false;
+
+            return true;
+          
         }
         public async Task Deletar(string endpoint)
         {
             throw new NotImplementedException();
         }
-
-    
-
 
       
     }

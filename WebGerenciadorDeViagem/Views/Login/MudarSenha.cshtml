@@ -1,0 +1,174 @@
+﻿@model bool;
+@{
+    Layout = null;
+}
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Open+Sans&display=swap" rel="stylesheet">
+<style>
+    :root {
+        font-size: 62.5%;
+    }
+
+    * {
+        padding: 0;
+        border: 0;
+        margin: 0;
+        box-sizing: border-box;
+    }
+
+    .login-content {
+        background-color: antiquewhite;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #Login {
+        border-radius: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 10rem;
+    }
+
+    .form-content input {
+        font-size: 2.2rem;
+        border-radius: .5rem;
+        border: 1px solid black;
+        height: 3rem;
+    }
+
+    .form-content label {
+        font-size: 2.2rem;
+        border-radius: .5rem;
+        display: block;
+        padding: .5rem;
+        text-align: start;
+        font-family: 'Bebas Neue', sans-serif;
+        line-height: 5rem;
+    }
+
+    .LoginSubmit {
+        margin-top: 1rem;
+        padding-top: 1rem;
+        width: 100%;
+        background-color: red;
+        text-align: center;
+        border-radius: .5rem;
+    }
+
+        .LoginSubmit input {
+            background: none;
+            font-size: 1.7rem;
+            color: black;
+            cursor: pointer;
+            padding: 0 9rem;
+            color: white;
+        }
+
+    @@media (min-width: 500px) {
+        #Login {
+            border: 1px solid black;
+        }
+    }
+</style>
+
+<div class="login-content">
+    
+    <section id="Login">
+        <form method="post" onsubmit="return verificarCampos()">
+            @if (Model)
+            {
+                <div class="form-content">
+                    <label id="usuarioAlterado">Senha alterada com sucesso</label>
+                </div>
+                <br />
+            }
+
+            <div class="form-content">
+                <label for="matricula">Matricula</label>
+                <input id="Matricula" name="Matricula" type="number" placeholder="Digite sua matrícula" />
+            </div>
+            <div class="form-content">
+                <label for="senha">Senha</label>
+                <input id="Senha" name="Senha" type="password" placeholder="Digite sua senha atual" />
+            </div>
+            <div class="form-content">
+                <label for="Novasenha">Nova Senha</label>
+                <input id="Novasenha" name="Novasenha" type="password" placeholder="Digite sua nova Senha" />
+            </div>
+            <div class="form-content">
+                <label for="NovasenhaConfirmacao">Confirme Nova Senha</label>
+                <input id="NovasenhaConfirmacao" name="NovasenhaConfirmacao" type="password" placeholder="Repita a senha novamente" />
+            </div>
+            <div class="LoginSubmit login">
+                <input type="submit" value="Enviar" />
+            </div>
+            <div class="LoginSubmit reset">
+                <input type="reset" value="Limpar" />
+            </div>
+
+            <br />
+        </form>
+    </section>
+</div>
+
+
+<script>
+
+    setTimeout(function () {
+        document.getElementById('usuarioAlterado').textContent = '';
+    }, 5000);
+
+    function senhaAlterada(alteradoComSucesso) {
+        if (alteradoComSucesso) {
+            alert('Senha alterada com sucesso');
+        }
+        else {
+            alert("erro ao tentar alterar sua senha");
+        }
+    }
+    function verificarCampos() {
+        var novaSenha = document.getElementById('Novasenha').value;
+        var confirmacaoSenha = document.getElementById('NovasenhaConfirmacao').value;
+        var matricula = document.getElementById('Matricula').value;
+        var senha = document.getElementById('Senha').value;
+
+        if (!validarMatricula(matricula)) {
+            alert('Aviso: Matricula incorreta deve ter  6 caracteres. Por favor, verifique.');
+            return false;
+        }
+        else if (!validarSenha(senha)) {
+            alert('Aviso: Senhas deve ter entre 6 e 12 caracteres. Por favor, verifique.');
+            return false;
+        }
+        else if (!validarSenhas(novaSenha, confirmacaoSenha)) {
+            alert('Aviso: Senhas não correspondem. Por favor, verifique. devem ser iguais, e devem ter entre 6 e 12 caracteres');
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
+    function validarSenha(senha) {
+        
+        var validaSenha = senha.trim().length;
+        return (validaSenha >= 6 && validaSenha <= 12 )
+    }
+
+    function validarMatricula(matricula) {
+        return matricula.trim().length === 6;
+    }
+
+    function validarSenhas(novaSenha, confirmacaoSenha) {
+
+        var senhaNaoEVazia = validarSenha(novaSenha);
+
+        return (senhaNaoEVazia && novaSenha === confirmacaoSenha);
+    }
+</script>
