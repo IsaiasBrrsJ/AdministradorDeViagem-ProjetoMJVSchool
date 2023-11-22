@@ -1,16 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using GerenciadorDeViagem.WEB.Data;
+﻿using Microsoft.AspNetCore.Mvc;
 using GerenciadorDeViagem.WEB.Models;
-using GerenciadorDeViagem.WEB.Models.EndPoints;
-using Microsoft.Extensions.Options;
 using GerenciadorDeViagem.WEB.Models.Api.Interfaces;
-using GerenciadorDeViagem.WEB.Models.Enum;
 
 namespace GerenciadorDeViagem.WEB.Controllers
 {
@@ -49,15 +39,14 @@ namespace GerenciadorDeViagem.WEB.Controllers
         }
 
       
-        public async Task<IActionResult> Create(int matricula)
+        public async Task<IActionResult> MarcarViagem(int matriculaUserLogado)
         {
 
-            return View(new Viagem{ MatriculaUserLogado = matricula});
+            return View(new Viagem{ MatriculaUserLogado = matriculaUserLogado });
         }
 
-        
-        [HttpPost]
-        public async Task<IActionResult> Create([Bind("Destino,DataIda,DataVolta,TipoTransporte,MatriculaAprovador,MatriculaSolicitante")] Viagem viagem)
+        [HttpPost, ActionName("MarcarViagemConfirma")]
+        public async Task<IActionResult> MarcarViagemConfirma([Bind("Destino,DataIda,DataVolta,TipoTransporte,MatriculaAprovador,MatriculaSolicitante")] Viagem viagem)
         {
             if (viagem.MatriculaAprovador.ToString().Length < 6)
             {

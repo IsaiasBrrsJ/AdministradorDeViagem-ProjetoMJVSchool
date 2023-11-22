@@ -5,8 +5,9 @@ namespace GerenciadorDeViagem.WEB.Models.Api
 {
     public class ApiCliente : IApiMetodos
     {
-        private readonly HttpClient _httpClient;
-       
+  
+     
+        private HttpClient _httpClient = default!;
         public ApiCliente()
         {
             _httpClient = new HttpClient();

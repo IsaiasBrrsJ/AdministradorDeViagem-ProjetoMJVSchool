@@ -115,7 +115,7 @@
                         @Html.DisplayFor(modelItem => item.MatriculaSolicitante)
                     </td>
                     <td>
-                        @if ((item.DataIda < DateTime.Now) && (item.StatusViagem != GerenciadorDeViagem.WEB.Models.Enum.StatusViagem.Cancelada || item.StatusViagem != GerenciadorDeViagem.WEB.Models.Enum.StatusViagem.Aprovado || item.StatusViagem != GerenciadorDeViagem.WEB.Models.Enum.StatusViagem.Pendente))
+                        @if ((item.DataIda < DateTime.Now) && (item.StatusViagem ==  GerenciadorDeViagem.WEB.Models.Enum.StatusViagem.Pendente))
                         {
                             <button disabled type="button" class="btn btn-danger">Tempo Excedido</button>
                         }
@@ -142,7 +142,9 @@
         </tbody>
     </table>
 </div>
-<a asp-action="Create" asp-route-matricula="@matriculaUserLogado"><button type="button" class="btn btn-dark">Marcar Viagem</button></a>
+<a asp-action="MarcarViagem" asp-route-matriculaUserLogado="@matriculaUserLogado"><button type="button" class="btn btn-dark">Marcar Viagem</button></a>
+<a asp-action="CadastrarUsuario" asp-controller="UsuarioAdmin" asp-route-pagina="@GerenciadorDeViagem.WEB.Models.Enum.Pagina.IndexAdministrador" asp-route-matricula="@matriculaUserLogado"><button type="button" class="btn btn-dark">Cadastrar Usuario</button></a>
+<a asp-action="Index" asp-controller="UsuarioAdmin" asp-route-pagina="@GerenciadorDeViagem.WEB.Models.Enum.Pagina.IndexAdministrador" asp-route-matricula="@matriculaUserLogado"><button type="button" class="btn btn-dark">Consultar Usuário</button></a>
 <style>
     .page-item.active .page-link {
     

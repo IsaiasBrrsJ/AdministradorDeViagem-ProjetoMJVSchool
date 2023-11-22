@@ -9,11 +9,12 @@ namespace GerenciadorDeViagem.WEB.Data
 {
     public class GerenciadorDeViagemWEBContext : DbContext
     {
-        public GerenciadorDeViagemWEBContext (DbContextOptions<GerenciadorDeViagemWEBContext> options)
+        public GerenciadorDeViagemWEBContext(DbContextOptions<GerenciadorDeViagemWEBContext> options)
             : base(options)
         {
         }
 
-        public DbSet<GerenciadorDeViagem.WEB.Models.Viagem> Viagem { get; set; } = default!;
+        public DbSet<Viagem> Viagem { get; set; } = default!;
+        public DbSet<Usuario> Usuario { get; set; } = default!;
     }
 }

@@ -1,0 +1,109 @@
+﻿@model GerenciadorDeViagem.WEB.Models.Usuario
+
+@{
+    ViewData["Title"] = "Cadastrar Usuario";
+}
+
+@{
+    var cadastrouComSucesso = ViewBag.CadastrouComSucesso;
+}
+
+<style>
+    .mensagemNaTela {
+        opacity: 1;
+        transition: opacity 0.5s ease-out;
+    }
+
+    .escondido{
+        opacity:0;
+    }
+</style>
+<h3>Cadastrar no sistema</h3>
+<hr />
+
+@if (cadastrouComSucesso == GerenciadorDeViagem.WEB.Models.Enum.SituacaoCadastro.CadastroRealizado)
+{
+    <div class="mensagemUsuario alert alert-success" role="alert">
+        <p>Cadastrado realizado com sucesso</p>
+    </div>
+}
+else if (cadastrouComSucesso == GerenciadorDeViagem.WEB.Models.Enum.SituacaoCadastro.ErroNoCadastro)
+{
+    <div class="mensagemUsuario alert alert-danger" role="alert">
+        <p>Erro ao tentar cadastrar, contate o suporte ou tente novamente <strong>Email: </strong><em>suporte@empresa.com</em></p>
+    </div>
+}
+<div class="row">
+    <div class="col-md-6 offset-md-3">
+        <form asp-action="CadastrarUsuarioConfirma" class="needs-validation" novalidate>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="Matricula" class="control-label">Matrícula</label>
+                <input asp-for="Matricula" value="@Model.Matricula" placeholder="932456 - matricula deve ter 6 caracteres" class="form-control" required />
+                <span asp-validation-for="Matricula" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="NomeCompleto" class="control-label">Nome Completo</label>
+                <input asp-for="NomeCompleto" class="form-control" placeholder="Digite seu nome ex..:  Ana El ou Anaester Elieze ambr" required />
+                <span asp-validation-for="NomeCompleto" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Email" class="control-label">Email</label>
+                <input asp-for="Email" class="form-control" placeholder="xxxxx@empresa.com ou xxxxx@email.com" required />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="TipoDeUsuario" class="control-label">Tipo de Usuário</label>
+                <select asp-for="TipoDeUsuario" class="form-control" required>
+                    <option value="">Selecione o Tipo do Usuário</option>
+                    @foreach (var tipo in Enum.GetValues(typeof(GerenciadorDeViagem.WEB.Models.Enum.TipoDeUsuario)))
+                    {
+                        <option value="@tipo">@tipo</option>
+                    }
+                </select>
+                <span asp-validation-for="TipoDeUsuario" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="form-group">
+               <button type="submit" class="btn btn-success form-control">Cadastrar</button>
+            </div>
+            <br />
+            <div class="form-group">
+                <a asp-controller="UsuarioAdmin" asp-action="VoltarPagina" asp-route-pagina="@ViewBag.pagina" asp-route-matricula="@ViewBag.matricula"><button type="button" class="btn btn-info form-control" onclick="mudarMetodo()">Voltar</button></a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+<script>
+
+    setTimeout(function () {
+        var mensagensTela = document.getElementsByClassName('mensagemUsuario');
+        for (var i = 0; i < mensagensTela.length; i++) {
+            mensagensTela[i].style.display = 'none';
+        }
+
+        for (var i = 0; i < mensagens.length; i++) {
+            mensagensTela[i].classList.add('escondido');
+        }
+    }, 4000);
+
+  
+        function mudarMetodo() {
+
+            var form = document.getElementById('loginForm');
+
+            form.method = 'get';
+
+            form.submit();
+        }
+</script>

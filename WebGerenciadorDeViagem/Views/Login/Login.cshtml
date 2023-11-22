@@ -2,6 +2,7 @@
 @{
     Layout = null;
 }
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -70,6 +71,15 @@
             color: white;
         }
 
+    .mensagemNaTela {
+        opacity: 1;
+        transition: opacity 0.5s ease-out;
+    }
+
+    .escondido {
+        opacity: 0;
+    }
+
     @@media (min-width: 500px) {
         #Login {
             border: 1px solid black;
@@ -78,8 +88,16 @@
 </style>
 
 <div class="login-content">
+
  <section id="Login">
+ 
     <form id="loginForm" method="post">
+            @if (ViewBag.LoginUsuario == GerenciadorDeViagem.WEB.Models.Enum.StatusLogin.LoginErro)
+            {
+                <div class="mensagemUsuario alert alert-danger offset-3" role="alert">
+                    <p>Erro ao logar, verifique sua informações, tente novamente contate o suporte <strong>Email: </strong><em>suporte@empresa.com</em></p>
+                </div>
+            }
        <div class="form-content" onsubmit="validaCampos()">
          <label for="matricula">Matricula</label>
          <input id="matricula" name="matricula" type="number" placeholder="Digite sua matrícula" />
@@ -102,6 +120,7 @@
       </div>
     </form>
   </section>
+ 
 </div>
 
 
@@ -114,4 +133,18 @@
 
         form.submit();
     }
+
+
+  setTimeout(function () {
+       var mensagensTela = document.getElementsByClassName('mensagemUsuario');
+       
+       for (var i = 0; i < mensagensTela.length; i++) {
+         mensagensTela[i].style.display = 'none';
+        }
+
+         for (var i = 0; i < mensagensTela.length; i++) {
+           mensagensTela[i].classList.add('escondido');
+         }
+        }, 4000);
+
 </script>

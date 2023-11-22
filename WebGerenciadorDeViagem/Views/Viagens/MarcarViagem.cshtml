@@ -1,0 +1,98 @@
+﻿@model GerenciadorDeViagem.WEB.Models.Viagem
+
+@{
+    ViewData["Title"] = "Marcar Viagem";
+}
+
+<h2>Marcar Viagem</h2>
+
+<hr />
+<div class="column">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <form asp-action="Create" class="needs-validation" novalidate onsubmit=" validaDadosAntesDeSubmeter()">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="form-group">
+                        <label asp-for="Destino" class="control-label">Destino:</label>
+                        <input required oninput="verificarCamposPreenchidos()" value="@Model.Destino" asp-for="Destino" placeholder="Informe o destino" class="form-control" />
+                        <span asp-validation-for="Destino" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="DataIda" class="control-label">Data de Ida:</label>
+                        <input required oninput="verificarCamposPreenchidos()" asp-for="DataIda" value="@Model.DataIda" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" max="@DateTime.Now.AddMonths(6).ToString("yyyy-MM-ddTHH:mm")" class="form-control" />
+                        <span asp-validation-for="DataIda" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="DataVolta" class="control-label">Data de Volta:</label>
+                        <input required oninput="verificarCamposPreenchidos()" asp-for="DataVolta" value="@Model.DataVolta" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" max="@DateTime.Now.AddMonths(6).ToString("yyyy-MM-ddTHH:mm")" class="form-control" />
+                        <span asp-validation-for="DataVolta" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="TipoTransporte" class="control-label">Tipo de Transporte:</label>
+                        <select required oninput="verificarCamposPreenchidos()" asp-for="TipoTransporte" class="form-control">
+                            <option value="">Selecione um transporte</option>
+                            @foreach (var tipo in Enum.GetValues(typeof(GerenciadorDeViagem.WEB.Models.Enum.TipoTransporte)))
+                            {
+                                <option value="@tipo">@tipo</option>
+                            }
+                        </select>
+                        <span asp-validation-for="TipoTransporte" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="MatriculaAprovador" class="control-label">Matrícula do Aprovador:</label>
+                        <input id="MatriculaAprovador" required oninput="verificarCamposPreenchidos()" asp-for="MatriculaAprovador" maxlength="6" placeholder="Informe a matricula do aprovador" class="form-control" />
+                        <span asp-validation-for="MatriculaAprovador" class="text-danger"></span>
+                        <p>@ViewBag.MatriculaErrada </p>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="MatriculaSolicitante" class="control-label">Matrícula do Solicitante:</label>
+                        <input id="MatriculaSolicitante" readonly oninput="verificarCamposPreenchidos()" value="@Model.MatriculaUserLogado" asp-for="MatriculaSolicitante" class="form-control" />
+                        <span asp-validation-for="MatriculaSolicitante" class="text-danger"></span>
+                    </div>
+
+                    <br />
+                    <div class="form-group">
+                        <button asp-action="MarcarViagemConfirma" asp-controller="Viagens" id="enviar" type="submit" disabled class="btn btn-primary form-control">Enviar</button>
+                    </div>
+                    <br />
+                    <div class="form-group">
+                        <a asp-action="MarcarViagem" asp-route-matriculaUserLogado="@Model.MatriculaUserLogado"><button type="button" class="btn btn-info form-control">Voltar</button></a>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+}
+<script>
+    function verificarCamposPreenchidos() {
+
+        var campos = document.querySelectorAll('input[type="text"], input[type="number"],input[type="datetime-local"], select');
+
+
+        var todosPreenchidos = Array.from(campos).every(function (campo) {
+            return (campo.value.trim() !== '')
+        });
+
+
+        var botao = document.getElementById('enviar');
+
+
+        botao.disabled = !todosPreenchidos;
+    }
+</script>

@@ -1,5 +1,6 @@
 ﻿using GerenciadorDeViagem.WEB.Models;
 using GerenciadorDeViagem.WEB.Models.Api.Interfaces;
+using GerenciadorDeViagem.WEB.Models.Enum;
 using Microsoft.AspNetCore.Mvc;
 using static System.Net.Mime.MediaTypeNames;
 
@@ -16,8 +17,9 @@ namespace GerenciadorDeViagem.WEB.Controllers
             _loginApi = loginApi;
         }
 
-        public async Task<IActionResult> Login()
+        public async Task<IActionResult> Login(StatusLogin statusLoing = StatusLogin.NaoFezLogin)
         {
+            ViewBag.LoginUsuario = statusLoing;
             return View();
         }
 
@@ -31,10 +33,13 @@ namespace GerenciadorDeViagem.WEB.Controllers
         [HttpPost]
         public async Task<IActionResult> Login([Bind("Matricula, Senha")] UsuarioLogin usuarioLogin)
         {
-           var usuario =  await _loginApi.Login(usuarioLogin);
+         
 
-            if (usuario is null)
-                return View();
+            var usuario = await _loginApi.Login(usuarioLogin);
+
+            if(usuario is null)
+                return RedirectToAction("Login", "Login", new { statusLoing  =StatusLogin.LoginErro });
+
 
             if (usuario.TipoUsuario == Models.Enum.TipoDeUsuario.Administrador)
                 return RedirectToAction("PaginaAdministrador", "Viagens", new { matricula = usuario.Matricula});

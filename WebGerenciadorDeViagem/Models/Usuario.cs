@@ -4,10 +4,10 @@ namespace GerenciadorDeViagem.WEB.Models
 {
     public class Usuario
     {
-       
-        public int Matricula { get; private set; }
-        public string NomeCompleto { get; private set; } = default!;
-        public string Email { get; private set; } = default!;
-        public TipoDeUsuario TipoDeUsuario { get; private set; }
+        public int Id { get;  set; }
+        public int Matricula { get;  set; }
+        public string NomeCompleto { get;  set; } = default!;
+        public string Email { get;  set; } = default!;
+        public TipoDeUsuario TipoDeUsuario { get;  set; }
     }
 }

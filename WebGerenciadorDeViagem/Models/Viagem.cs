@@ -1,6 +1,7 @@
 ﻿using GerenciadorDeViagem.WEB.Models.EndPoints;
 using GerenciadorDeViagem.WEB.Models.Enum;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
 namespace GerenciadorDeViagem.WEB.Models
