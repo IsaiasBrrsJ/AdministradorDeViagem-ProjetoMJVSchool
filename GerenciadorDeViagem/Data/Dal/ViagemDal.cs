@@ -14,8 +14,8 @@ namespace GerenciadorDeViagem.Data.Dao
         private readonly IBanco _connection;
         private readonly SqlCommand _command;
        
-        public record ViagemConsulta(int Id, string destino, DateTime dataIda, DateTime dataVolta, DateTime dataSolicitacao,
-                                     TipoTransporte tipoTransporte, StatusViagem statusViagem, Object DataAprovacaoRecusa);
+        public record ViagemConsulta(int Id, string Destino, DateTime DataIda, DateTime DataVolta, DateTime DataDaSolicitacao,
+                                     TipoTransporte TipoTransporte, StatusViagem StatusViagem, int MatriculaAprovador, int MatriculaSolicitante, Object DataAprovacaoRecusa);
 
         private List<ViagemConsulta> ViagemConsultas = default!;
         public ViagemDal([FromServices] IBanco connection)
@@ -87,21 +87,21 @@ namespace GerenciadorDeViagem.Data.Dao
                 _command.Connection = _connection.AbrirConexao();
 
                 _command.CommandText = @"SELECT Id, Destino,DataIda, DataVolta,DataSolicitacao,
-                                       TipoTransporte,StatusViagem,DataAprovacaoRecusa
+                                       TipoTransporte,StatusViagem, MatriculaAprovador, MatriculaSolicitante, DataAprovacaoRecusa
                                        FROM dbo.Viagem
-                                       WHERE MatriculaSolicitante = @Matricula and StatusViagem != @StatusViagemCancelada";
+                                       WHERE  MatriculaSolicitante = @Matricula OR MatriculaAprovador = @MatriculaAprovador ";
+                                       
 
 
                 _command.Parameters.AddWithValue("@Matricula", SqlDbType.Int).Value = matricula;
-                _command.Parameters.AddWithValue("@StatusViagemCancelada", SqlDbType.Int).Value = StatusViagem.Cancelada;
+                _command.Parameters.AddWithValue("@MatriculaAprovador", SqlDbType.Int).Value = matricula;
+               
 
                 var dadosDoBanco = await _command.ExecuteReaderAsync();
                 ViagemConsulta viagemConsulta = null!;
 
                 while (dadosDoBanco.Read())
                 {
-
-                    
                     viagemConsulta = new
                         ViagemConsulta
                         (
@@ -112,13 +112,18 @@ namespace GerenciadorDeViagem.Data.Dao
                           (DateTime)dadosDoBanco["DataSolicitacao"],
                           (TipoTransporte)(int)dadosDoBanco["TipoTransporte"],
                           (StatusViagem)(int)dadosDoBanco["StatusViagem"],
-                          dadosDoBanco["DataAprovacaoRecusa"]
+                          (int)dadosDoBanco["MatriculaAprovador"],
+                          (int)dadosDoBanco["MatriculaSolicitante"],
+                               dadosDoBanco["DataAprovacaoRecusa"]
                         );
+
 
                     ViagemConsultas.Add(viagemConsulta);
                 }
 
-               
+          
+
+
                 return ViagemConsultas;
             }
             catch (SqlException)
@@ -135,7 +140,93 @@ namespace GerenciadorDeViagem.Data.Dao
                 _command.Dispose();
             }
         }
+        private async Task ColocaStatusCanceladoViagemExpirada(int idViagem)
+        {
 
+            try
+            {
+                _command.Connection = _connection.AbrirConexao();
+
+                _command.CommandText = @"UPDATE dbo.Viagem
+                                         SET StatusViagem = @StatusViagem,
+                                         DataAprovacaoRecusa = @DataAprovacaoRecusa
+                                         WHERE Id = @Id";
+
+                _command.Parameters.AddWithValue("@Id", SqlDbType.Int).SqlValue = idViagem;
+                _command.Parameters.AddWithValue("@StatusViagem", SqlDbType.Int).SqlValue = StatusViagem.Cancelada;
+                _command.Parameters.AddWithValue("@DataAprovacaoRecusa", SqlDbType.DateTime).SqlValue = DateTime.Now;
+
+                var linhasAfetadas = await _command.ExecuteNonQueryAsync();
+
+            }
+            catch (SqlException)
+            {
+               
+            }
+            catch (Exception)
+            {
+               
+            }
+            finally
+            {
+                _connection.FecharConexao();
+                _command.Dispose();
+            }
+        }
+        public async Task<ViagemConsulta> ObterViagemPorId(int idViagem)
+        {
+            try
+            {
+                _command.Connection = _connection.AbrirConexao();
+
+                _command.CommandText = @"SELECT Id, Destino,DataIda, DataVolta,DataSolicitacao,
+                                       TipoTransporte,StatusViagem, MatriculaAprovador, MatriculaSolicitante, DataAprovacaoRecusa
+                                       FROM dbo.Viagem
+                                       WHERE  Id = @IdViagem";
+                                  
+
+
+                _command.Parameters.AddWithValue("@IdViagem", SqlDbType.Int).Value = idViagem;
+
+
+                var dadosDoBanco = await _command.ExecuteReaderAsync();
+                ViagemConsulta viagemConsulta = null!;
+
+                while (dadosDoBanco.Read())
+                {
+                    viagemConsulta = new
+                        ViagemConsulta
+                        (
+                          (int)dadosDoBanco["Id"],
+                          (string)dadosDoBanco["Destino"],
+                          (DateTime)dadosDoBanco["DataIda"],
+                          (DateTime)dadosDoBanco["DataVolta"],
+                          (DateTime)dadosDoBanco["DataSolicitacao"],
+                          (TipoTransporte)(int)dadosDoBanco["TipoTransporte"],
+                          (StatusViagem)(int)dadosDoBanco["StatusViagem"],
+                          (int)dadosDoBanco["MatriculaAprovador"],
+                          (int)dadosDoBanco["MatriculaSolicitante"],
+                               dadosDoBanco["DataAprovacaoRecusa"]
+                        );
+                }
+
+
+                return viagemConsulta;
+            }
+            catch (SqlException)
+            {
+                return null!;
+            }
+            catch (Exception)
+            {
+                return null!;
+            }
+            finally
+            {
+                _connection.FecharConexao();
+                _command.Dispose();
+            }
+        }
         public async Task<bool> CancelarViagem(int IdViagem)
         {
             try
@@ -144,10 +235,12 @@ namespace GerenciadorDeViagem.Data.Dao
 
                 _command.CommandText = @"UPDATE dbo.Viagem
                                          SET StatusViagem = @StatusViagem,
+                                         DataAprovacaoRecusa = @DataAprovacaoRecusa
                                          WHERE Id = @Id";
 
                 _command.Parameters.AddWithValue("@Id", SqlDbType.Int).SqlValue = IdViagem;
                 _command.Parameters.AddWithValue("@StatusViagem", SqlDbType.Int).SqlValue = StatusViagem.Cancelada;
+                _command.Parameters.AddWithValue("@DataAprovacaoRecusa", SqlDbType.DateTime).SqlValue = DateTime.Now;
 
 
                 var linhasAfetadas = await _command.ExecuteNonQueryAsync();
@@ -180,12 +273,13 @@ namespace GerenciadorDeViagem.Data.Dao
                 _command.Connection = _connection.AbrirConexao();
 
                 _command.CommandText = @"UPDATE dbo.Viagem
-                                         SET StatusViagem = @StatusViagem
+                                         SET StatusViagem = @StatusViagem,
+                                         DataAprovacaoRecusa = @DataAprovacaoRecusa
                                          WHERE Id = @Id";
 
                 _command.Parameters.AddWithValue("@Id", SqlDbType.Int).SqlValue = IdViagem;
                 _command.Parameters.AddWithValue("@StatusViagem", SqlDbType.Int).SqlValue = StatusViagem.Aprovado;
-
+                _command.Parameters.AddWithValue("@DataAprovacaoRecusa", SqlDbType.DateTime).SqlValue = DateTime.Now;
 
                 var linhasAfetadas = await _command.ExecuteNonQueryAsync();
 

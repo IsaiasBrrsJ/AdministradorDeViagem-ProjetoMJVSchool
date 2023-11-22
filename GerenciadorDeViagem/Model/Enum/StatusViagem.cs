@@ -1,9 +1,8 @@
 ﻿namespace GerenciadorDeViagem.Model.Enum
 {
-    public enum StatusViagem
+    public enum StatusViagem : byte
     {
         Aprovado = 1,
-        Recusado,
         Pendente,
         Cancelada
     }

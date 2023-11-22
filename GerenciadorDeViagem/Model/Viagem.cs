@@ -18,7 +18,7 @@ namespace GerenciadorDeViagem.Model
             DataDaSolicitacao = DateTime.Now;
         }
 
-        public int Id { get; private set; } 
+        public int Id { get;  set; } 
         public string Destino { get; private set; } = String.Empty; 
 
 

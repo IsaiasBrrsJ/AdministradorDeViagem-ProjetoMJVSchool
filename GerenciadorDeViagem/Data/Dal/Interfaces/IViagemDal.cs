@@ -9,7 +9,7 @@ namespace GerenciadorDeViagem.Data.Dal.Interfaces
         Task<bool> CadastrarViagem(Viagem viagem);
         Task<bool> CancelarViagem(int IdViagem);
         Task<bool> AprovarViagem(int IdViagem);
-    
+        Task<ViagemConsulta> ObterViagemPorId(int idViagem);
 
     }
 }

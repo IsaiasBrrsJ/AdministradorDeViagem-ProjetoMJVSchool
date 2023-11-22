@@ -63,19 +63,19 @@ namespace GerenciadorDeViagem.Data.Dao
             }
         }
 
-        public async Task<bool> AlterarSenha(int matricula, string senha)
+        public async Task<bool> AlterarSenha(int matricula, string senha, string novaSenha)
         {
             try
             {
                 _command.Connection = _connection.AbrirConexao();
 
                 _command.CommandText = @"UPDATE dbo.usuario
-                                         SET Senha = @Senha
-                                         WHERE Matricula = @Matricula";
+                                         SET Senha = @NovaSenha
+                                         WHERE Matricula = @Matricula and Senha=@senha";
 
                 _command.Parameters.AddWithValue("@Matricula", SqlDbType.Int).SqlValue = matricula;
                 _command.Parameters.AddWithValue("@Senha", SqlDbType.Int).SqlValue = senha;
-
+                _command.Parameters.AddWithValue("@NovaSenha", SqlDbType.Int).SqlValue = novaSenha;
 
                 var linhasAfetadas = await _command.ExecuteNonQueryAsync();
 

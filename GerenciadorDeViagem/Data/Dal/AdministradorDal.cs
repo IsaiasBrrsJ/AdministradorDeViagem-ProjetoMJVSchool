@@ -15,7 +15,7 @@ namespace GerenciadorDeViagem.Data.Dao
         private readonly IBanco _connection;
         private readonly SqlCommand _command;
         
-        public record DadosUsuario(int matricula, string nomeCompleto, string email, TipoDeUsuario TipoDeUsuario);
+        public record DadosUsuario(int Matricula, string NomeCompleto, string Email, TipoDeUsuario TipoDeUsuario);
         public AdministradorDal([FromServices] IBanco banco)
         {
             
@@ -45,7 +45,7 @@ namespace GerenciadorDeViagem.Data.Dao
 
                 _command.Parameters.AddWithValue("@Matricula",SqlDbType.Int).Value = usuario.Matricula;
                 _command.Parameters.AddWithValue("@NomeCompleto",SqlDbType.VarChar).Value = usuario.NomeCompleto;
-                _command.Parameters.AddWithValue("@Email",SqlDbType.VarChar).Value = usuario.Email;
+                _command.Parameters.AddWithValue("@Email",SqlDbType.VarChar).Value = usuario.Email.ToLower();
                 _command.Parameters.AddWithValue("@TipoUsuario",SqlDbType.Int).Value = usuario.TipoDeUsuario;
                 _command.Parameters.AddWithValue("@Senha",SqlDbType.VarChar).Value = usuario.Senha;
 

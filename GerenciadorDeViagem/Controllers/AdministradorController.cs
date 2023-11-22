@@ -30,9 +30,7 @@ namespace GerenciadorDeViagem.Controllers
             if (cadastrouNoSistema is false)
                 return BadRequest(new {BadRequest = "Erro ao cadastrar usuário"});
 
-            var uri = new Uri($"/api/Administrador/CadastroUsuario/{usuario.Matricula}", UriKind.Relative);
-
-            return Created(uri, new { Success = "Cadastro realizado com sucesso" });
+            return Ok(cadastrouNoSistema);
        
         }
 
@@ -45,8 +43,9 @@ namespace GerenciadorDeViagem.Controllers
             if (user is null)
                 return NotFound();
 
+            var usuarioJson = JsonSerializer.Serialize(user);
 
-            return Ok(user);
+            return Ok(usuarioJson);
         }
 
         [HttpDelete("DeletaUsuario/{matricula}")]
@@ -63,9 +62,6 @@ namespace GerenciadorDeViagem.Controllers
         [HttpPut("AlterarUsuario/{matricula}")]
         public async Task<IActionResult> AtualizaUsuario()
         {
-            
-
-
              return Ok();
         }
 

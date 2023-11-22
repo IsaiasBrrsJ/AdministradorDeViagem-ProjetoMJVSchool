@@ -17,19 +17,7 @@ namespace GerenciadorDeViagem.Controllers
             _viagemDal = viagemDal;
         }
 
-        [HttpPost("CadastrarViagem")]
-        public async Task<IActionResult> MarcarViagem([Bind(nameof(viagem.Destino), nameof(viagem.DataIda),
-            nameof(viagem.DataVolta), nameof(viagem.TipoTransporte),
-            nameof(viagem.MatriculaSolicitante), nameof(viagem.MatriculaSolicitante))]Viagem viagem)
-        {
-            var viagemCadastrada = await _viagemDal.CadastrarViagem(viagem);
-            
-            if (viagemCadastrada is false)
-                return BadRequest();
 
-
-            return Ok();
-        }
 
         [HttpGet("ConsultarViagem/{matricula}")]
         public async Task<IActionResult> ConsultaViagem([FromRoute] int matricula)
@@ -40,7 +28,34 @@ namespace GerenciadorDeViagem.Controllers
             if (viagemSituacao is null)
                 return NotFound();
 
-            return Ok(viagemSituacao);
+           var viagemJson = JsonSerializer.Serialize(viagemSituacao);
+
+            return Ok(viagemJson);
+        }
+        [HttpGet("BuscarViagemPorId/{Id}")]
+        public async Task<IActionResult> ObterViagemPorId([FromRoute] int Id)
+        {
+            var viagemPorId = await _viagemDal.ObterViagemPorId(Id);
+
+            if (viagemPorId is null)
+                return NotFound();
+
+            var viagemJson = JsonSerializer.Serialize(viagemPorId);
+
+            return Ok(viagemJson);
+        }
+        [HttpPost("CadastrarViagem")]
+        public async Task<IActionResult> MarcarViagem([Bind(nameof(viagem.Destino), nameof(viagem.DataIda),
+            nameof(viagem.DataVolta), nameof(viagem.TipoTransporte),
+            nameof(viagem.MatriculaSolicitante), nameof(viagem.MatriculaSolicitante))]Viagem viagem)
+        {
+            var viagemCadastrada = await _viagemDal.CadastrarViagem(viagem);
+
+            if (viagemCadastrada is false)
+                return BadRequest();
+
+
+            return Ok(viagemCadastrada);
         }
         [HttpPatch("CancelaViagem/{Id}")]
         public async Task<IActionResult> CancelaViagem([FromRoute] int Id)
@@ -50,18 +65,18 @@ namespace GerenciadorDeViagem.Controllers
             if(viagemCancelada is false)
                 return NotFound();
 
-            return Ok(new {OK = "Viagem cancelada com sucesso"});
+            return Ok(viagemCancelada);
         }
-
+ 
         [HttpPatch("Aprovar/{Id}")]
         public async Task<IActionResult> AprovarViagem([FromRoute] int Id)
         {
-            var viagemAprovada = await _viagemDal.CancelarViagem(Id);
+            var viagemAprovada = await _viagemDal.AprovarViagem(Id);
 
             if (viagemAprovada is false)
                 return NotFound();
 
-            return Ok(new { OK = "Viagem Aprovada com sucesso" });
+            return Ok(viagemAprovada);
         }
     }
 }

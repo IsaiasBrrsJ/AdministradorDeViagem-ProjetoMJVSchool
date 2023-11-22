@@ -13,7 +13,9 @@ namespace GerenciadorDeViagem.Controllers
     [ApiController]
     public class LoginController : ControllerBase
     {
-        private record UsuarioLogado(int matricula, TipoDeUsuario tipoUsuario);
+        private record UsuarioLogado(int Matricula,string Senha, TipoDeUsuario TipoUsuario);
+        public record AlterarSenhaUsuario(string senha, string novaSenha);
+
         private readonly ILoginDal _loginDal;
        
         public LoginController([FromServices] ILoginDal loginDal)
@@ -25,21 +27,21 @@ namespace GerenciadorDeViagem.Controllers
         public async Task<IActionResult> Login([Bind(nameof(usuarioLogin.Matricula), nameof(usuarioLogin.Senha))] UsuarioLogin usuarioLogin)
         {
             var usuarioBanco = await _loginDal.ValidaCredenciais(usuarioLogin);
-
             if ( (usuarioLogin.Matricula != usuarioBanco.Matricula || usuarioLogin.Senha != usuarioBanco.Senha ) || usuarioBanco is null)
                 return NotFound(new {NotFound = "Erro ao  de login, valide seus dados ou tente novamente"});
 
-            var usuarioLogadoJson = JsonSerializer.Serialize(new UsuarioLogado(usuarioBanco.Matricula, usuarioBanco.TipoUsuario));
-            
-            return Ok(usuarioLogadoJson);
+            var usuarioLogado = new UsuarioLogado(usuarioBanco.Matricula, String.Empty, usuarioBanco.TipoUsuario);
+
+            var json = JsonSerializer.Serialize(usuarioLogado);
+            return Ok(json);
 
         }
 
 
         [HttpPatch("AtualizarSenha/{matricula}")]
-        public async Task<IActionResult> AlterarSenha([FromRoute] int matricula, [FromBody] string senha)
+        public async Task<IActionResult> AlterarSenha([FromRoute] int matricula,[Bind("senha, novaSenha")] AlterarSenhaUsuario alterarSenhaUsuario)
         {
-            var senhaAlterada = await _loginDal.AlterarSenha(matricula, senha);
+            var senhaAlterada = await _loginDal.AlterarSenha(matricula, alterarSenhaUsuario.senha, alterarSenhaUsuario.novaSenha);
 
             if (senhaAlterada is false)
                 return BadRequest();
