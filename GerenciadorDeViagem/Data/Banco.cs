@@ -14,7 +14,7 @@ namespace GerenciadorDeViagem.Data
             conection = new SqlConnection(Program.connectionString);
         }
 
-        public SqlConnection AbrirConexao()
+        public async Task<SqlConnection> AbrirConexao()
         {
             if (conection.State.Equals(ConnectionState.Closed))
             {
@@ -37,7 +37,7 @@ namespace GerenciadorDeViagem.Data
         }
 
 
-        public void FecharConexao()
+        public async Task  FecharConexao()
         {
             if (conection.State.Equals(ConnectionState.Open))
             {

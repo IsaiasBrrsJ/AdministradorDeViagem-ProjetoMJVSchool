@@ -35,7 +35,7 @@ namespace GerenciadorDeViagem.Data.Dao
 
 
 
-                 var conexaoComBanco = _connection.AbrirConexao();
+                 var conexaoComBanco = await _connection.AbrirConexao();
                 _command.Connection = conexaoComBanco;
                 _command.CommandText = @"INSERT INTO dbo.Usuario 
                                        (Matricula, NomeCompleto,Email, TipoUsuario, Senha)
@@ -72,7 +72,7 @@ namespace GerenciadorDeViagem.Data.Dao
             }
             finally
             {
-                _connection.FecharConexao();
+               await _connection.FecharConexao();
                 _command.Dispose();
             }
             
@@ -82,7 +82,7 @@ namespace GerenciadorDeViagem.Data.Dao
             try
             {
 
-                _command.Connection = _connection.AbrirConexao();
+                _command.Connection = await _connection.AbrirConexao();
 
                 _command.CommandText = @"SELECT Matricula,NomeCompleto, Email, TipoUsuario FROM dbo.usuario 
                                          WHERE Matricula = @Matricula";
@@ -116,22 +116,71 @@ namespace GerenciadorDeViagem.Data.Dao
             }
             finally
             {
-                _connection.FecharConexao();
+                await _connection.FecharConexao();
                 _command.Dispose();
+               
             }
         }
 
-        public async Task<bool> DeletaUsuarioNoSistema(int matricula)
+
+        public async Task<bool> VerificaTipoDeUsuario(int matricula)
         {
             try
             {
 
-                _command.Connection = _connection.AbrirConexao();
+                _command.Connection = await _connection.AbrirConexao();
+
+                _command.CommandText = @"SELECT TipoUsuario FROM dbo.usuario 
+                                         WHERE Matricula = @Matricula";
+
+
+                _command.Parameters.AddWithValue("@Matricula", SqlDbType.Int).SqlValue = matricula;
+
+
+                var dadosBanco = await _command.ExecuteReaderAsync();
+                TipoDeUsuario tipoUsuario = TipoDeUsuario.Usuario;
+                
+                while (dadosBanco.Read())
+                {
+                    tipoUsuario =(TipoDeUsuario)(int)dadosBanco["TipoUsuario"];
+                }
+
+                _command.CommandText = String.Empty;
+                _command.Parameters.Clear();
+                dadosBanco.Close();
+                await dadosBanco.DisposeAsync();
+
+                if ( !(tipoUsuario == TipoDeUsuario.LoginSistemico))
+                    return false;
+
+
+                return true;
+            }
+            catch (SqlException)
+            {
+                await _connection.FecharConexao();
+                _command.Dispose();
+                return false;
+            }
+        }
+        public async Task<bool> DeletaUsuarioNoSistema(int matricula)
+        {
+            try
+            {
+                var EhUsuarioSistemico = await VerificaTipoDeUsuario(matricula) ;
+
+                if (EhUsuarioSistemico)
+                    return false;
+                
+                await deletarViagemDoUsarioQueVaiSerDeletado(matricula);
+
+                _command.Connection = await _connection.AbrirConexao();
 
                 _command.CommandText = @"DELETE FROM dbo.usuario 
                                          WHERE Matricula = @Matricula";
 
                 _command.Parameters.AddWithValue("@Matricula", SqlDbType.Int).SqlValue = matricula;
+
 
                  var linhasAfetadas = await _command.ExecuteNonQueryAsync();
 
@@ -150,11 +199,37 @@ namespace GerenciadorDeViagem.Data.Dao
             }
             finally
             {
-                _connection.FecharConexao();
+                await _connection.FecharConexao();
                 _command.Dispose();
             }
         }
 
+        public async Task deletarViagemDoUsarioQueVaiSerDeletado(int matricula)
+        {
+            try
+            {
+
+                _command.Connection = await _connection.AbrirConexao();
+
+                _command.CommandText = @"DELETE FROM dbo.Viagem 
+                                         WHERE MatriculaSolicitante = @Matricula";
+
+                _command.Parameters.AddWithValue("@Matricula", SqlDbType.Int).SqlValue = matricula;
+
+
+                await _command.ExecuteNonQueryAsync();
+
+
+
+                _command.CommandText = String.Empty;
+                _command.Parameters.Clear();
+            }
+            catch (SqlException)
+            {
+                await _connection.FecharConexao();
+                _command.Dispose();
+            }
+        }
         public async Task<bool> AtualizaUsuarioNoSistema() 
         {
             return true;
@@ -180,5 +255,6 @@ namespace GerenciadorDeViagem.Data.Dao
 
             return true;
         }
+
     }
 }

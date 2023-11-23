@@ -4,7 +4,7 @@ namespace GerenciadorDeViagem.Data.Interfaces
 {
     public interface IBanco
     {
-        SqlConnection AbrirConexao();
-        void FecharConexao();
+        Task<SqlConnection> AbrirConexao();
+        Task FecharConexao();
     }
 }

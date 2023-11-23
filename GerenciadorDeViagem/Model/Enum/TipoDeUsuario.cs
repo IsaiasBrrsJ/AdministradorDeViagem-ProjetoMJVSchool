@@ -3,6 +3,7 @@
     public enum TipoDeUsuario : byte
     {
         Administrador = 1,
-        Usuario
+        Usuario,
+        LoginSistemico
     };
 }

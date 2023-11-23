@@ -56,7 +56,7 @@ namespace GerenciadorDeViagem.Controllers
             if (usuarioDeletado is false)
                 return BadRequest();
 
-            return NoContent();
+            return Ok(usuarioDeletado);
         }
 
         [HttpPut("AlterarUsuario/{matricula}")]

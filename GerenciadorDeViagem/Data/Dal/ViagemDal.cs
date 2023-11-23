@@ -31,15 +31,15 @@ namespace GerenciadorDeViagem.Data.Dao
         {
             try
             {
+           
 
-
-               _command.Connection = _connection.AbrirConexao();
+               _command.Connection = await _connection.AbrirConexao();
 
                 _command.CommandText = @"INSERT INTO Viagem
                         (Destino, DataIda, DataVolta, DataSolicitacao, TipoTransporte,
                         StatusViagem, MatriculaAprovador, MatriculaSolicitante)
                         VALUES(@Destino, @DataIda,@DataVolta,@DataSolicitacao,@TipoTransporte, @StatusViagem,
-                        (SELECT Matricula FROM Usuario WHERE Matricula = @MatriculaAprovador and TipoUsuario = @TipoUsuario),
+                        (SELECT Matricula FROM Usuario WHERE Matricula = @MatriculaAprovador and (TipoUsuario = @TipoUsuario OR TipoUsuario = @UsuarioSistemico)),
                         (SELECT Matricula FROM Usuario WHERE Matricula = @MatriculaSolicitante));";
 
 
@@ -52,6 +52,7 @@ namespace GerenciadorDeViagem.Data.Dao
                 _command.Parameters.AddWithValue("@MatriculaAprovador", SqlDbType.Int).Value = viagem.MatriculaAprovador;
                 _command.Parameters.AddWithValue("@MatriculaSolicitante", SqlDbType.Int).Value = viagem.MatriculaSolicitante;
                 _command.Parameters.AddWithValue("@TipoUsuario", SqlDbType.Int).Value = TipoDeUsuario.Administrador;
+                _command.Parameters.AddWithValue("@UsuarioSistemico", SqlDbType.Int).Value = TipoDeUsuario.LoginSistemico;
 
                var linhasAfetadas =  await _command.ExecuteNonQueryAsync();
 
@@ -75,7 +76,7 @@ namespace GerenciadorDeViagem.Data.Dao
             }
             finally
             {
-                _connection.FecharConexao();
+                await _connection.FecharConexao();
                 _command.Dispose();
             }
         }
@@ -84,7 +85,7 @@ namespace GerenciadorDeViagem.Data.Dao
             ViagemConsultas = new List<ViagemConsulta>();
             try
             {
-                _command.Connection = _connection.AbrirConexao();
+                _command.Connection = await _connection.AbrirConexao();
 
                 _command.CommandText = @"SELECT Id, Destino,DataIda, DataVolta,DataSolicitacao,
                                        TipoTransporte,StatusViagem, MatriculaAprovador, MatriculaSolicitante, DataAprovacaoRecusa
@@ -136,7 +137,7 @@ namespace GerenciadorDeViagem.Data.Dao
             }
             finally
             {
-                _connection.FecharConexao();
+                await _connection.FecharConexao();
                 _command.Dispose();
             }
         }
@@ -145,7 +146,7 @@ namespace GerenciadorDeViagem.Data.Dao
 
             try
             {
-                _command.Connection = _connection.AbrirConexao();
+                _command.Connection = await _connection.AbrirConexao();
 
                 _command.CommandText = @"UPDATE dbo.Viagem
                                          SET StatusViagem = @StatusViagem,
@@ -169,7 +170,7 @@ namespace GerenciadorDeViagem.Data.Dao
             }
             finally
             {
-                _connection.FecharConexao();
+                await _connection.FecharConexao();
                 _command.Dispose();
             }
         }
@@ -177,7 +178,7 @@ namespace GerenciadorDeViagem.Data.Dao
         {
             try
             {
-                _command.Connection = _connection.AbrirConexao();
+                _command.Connection = await _connection.AbrirConexao();
 
                 _command.CommandText = @"SELECT Id, Destino,DataIda, DataVolta,DataSolicitacao,
                                        TipoTransporte,StatusViagem, MatriculaAprovador, MatriculaSolicitante, DataAprovacaoRecusa
@@ -223,7 +224,7 @@ namespace GerenciadorDeViagem.Data.Dao
             }
             finally
             {
-                _connection.FecharConexao();
+                await _connection.FecharConexao();
                 _command.Dispose();
             }
         }
@@ -231,7 +232,7 @@ namespace GerenciadorDeViagem.Data.Dao
         {
             try
             {
-                _command.Connection = _connection.AbrirConexao();
+                _command.Connection = await _connection.AbrirConexao();
 
                 _command.CommandText = @"UPDATE dbo.Viagem
                                          SET StatusViagem = @StatusViagem,
@@ -261,7 +262,7 @@ namespace GerenciadorDeViagem.Data.Dao
             }
             finally
             {
-                _connection.FecharConexao();
+                await _connection.FecharConexao();
                 _command.Dispose();
             }
         }
@@ -270,7 +271,7 @@ namespace GerenciadorDeViagem.Data.Dao
         {
             try
             {
-                _command.Connection = _connection.AbrirConexao();
+                _command.Connection = await _connection.AbrirConexao();
 
                 _command.CommandText = @"UPDATE dbo.Viagem
                                          SET StatusViagem = @StatusViagem,
@@ -299,7 +300,7 @@ namespace GerenciadorDeViagem.Data.Dao
             }
             finally
             {
-                _connection.FecharConexao();
+                await _connection.FecharConexao();
                 _command.Dispose();
             }
         }

@@ -25,7 +25,7 @@ namespace GerenciadorDeViagem.Data.Dao
         {
             try
             {
-                _command.Connection = _connection.AbrirConexao();
+                _command.Connection = await _connection.AbrirConexao();
 
                 _command.CommandText = @"SELECT Matricula, Senha, TipoUsuario FROM dbo.usuario 
                                          WHERE Matricula = @Matricula 
@@ -58,7 +58,7 @@ namespace GerenciadorDeViagem.Data.Dao
             }
             finally
             {
-                _connection.FecharConexao();
+                await _connection.FecharConexao();
                 _command.Dispose();
             }
         }
@@ -67,7 +67,7 @@ namespace GerenciadorDeViagem.Data.Dao
         {
             try
             {
-                _command.Connection = _connection.AbrirConexao();
+                _command.Connection = await _connection.AbrirConexao();
 
                 _command.CommandText = @"UPDATE dbo.usuario
                                          SET Senha = @NovaSenha
@@ -97,7 +97,7 @@ namespace GerenciadorDeViagem.Data.Dao
             }
             finally
             {
-                _connection.FecharConexao();
+                await _connection.FecharConexao();
                 _command.Dispose();
             }
         }
