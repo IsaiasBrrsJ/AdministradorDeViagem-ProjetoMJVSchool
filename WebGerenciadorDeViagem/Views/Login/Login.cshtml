@@ -3,7 +3,6 @@
     Layout = null;
 }
 <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Open+Sans&display=swap" rel="stylesheet">
@@ -95,7 +94,7 @@
             @if (ViewBag.LoginUsuario == GerenciadorDeViagem.WEB.Models.Enum.StatusLogin.LoginErro)
             {
                 <div class="mensagemUsuario alert alert-danger offset-3" role="alert">
-                    <p>Erro ao logar, verifique sua informações, tente novamente contate o suporte <strong>Email: </strong><em>suporte@empresa.com</em></p>
+                    <p>Erro ao logar, verifique suas informações tente novamente ou contate o suporte <strong>Email: </strong><em>suporte@empresa.com</em></p>
                 </div>
             }
        <div class="form-content" onsubmit="validaCampos()">

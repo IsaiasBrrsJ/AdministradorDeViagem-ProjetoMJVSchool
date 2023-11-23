@@ -24,7 +24,7 @@
 @if (cadastrouComSucesso == GerenciadorDeViagem.WEB.Models.Enum.SituacaoCadastro.CadastroRealizado)
 {
     <div class="mensagemUsuario alert alert-success" role="alert">
-        <p>Cadastrado realizado com sucesso</p>
+        <p>Cadastrado realizado com sucesso, informações de login enviadas no email</p>
     </div>
 }
 else if (cadastrouComSucesso == GerenciadorDeViagem.WEB.Models.Enum.SituacaoCadastro.ErroNoCadastro)
@@ -35,12 +35,11 @@ else if (cadastrouComSucesso == GerenciadorDeViagem.WEB.Models.Enum.SituacaoCada
 }
 <div class="row">
     <div class="col-md-6 offset-md-3">
-        <form asp-action="CadastrarUsuarioConfirma" class="needs-validation" novalidate>
+        <form asp-action="CadastrarUsuarioConfirma" asp-route-matriculaUseLogado="@ViewBag.Matricula" class="needs-validation" novalidate>
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
             <div class="form-group">
                 <label asp-for="Matricula" class="control-label">Matrícula</label>
-                <input asp-for="Matricula" value="@Model.Matricula" placeholder="932456 - matricula deve ter 6 caracteres" class="form-control" required />
+                <input asp-for="Matricula" value="" placeholder="932456 - matricula deve ter 6 caracteres" class="form-control" required />
                 <span asp-validation-for="Matricula" class="text-danger"></span>
             </div>
 
@@ -69,11 +68,11 @@ else if (cadastrouComSucesso == GerenciadorDeViagem.WEB.Models.Enum.SituacaoCada
             </div>
             <br />
             <div class="form-group">
-               <button type="submit" class="btn btn-success form-control">Cadastrar</button>
+                <a asp-controller="UsuarioAdmin" asp-action="CadastrarUsuarioConfirma" ><button type="submit" class="btn btn-success form-control">Cadastrar</button></a>
             </div>
             <br />
             <div class="form-group">
-                <a asp-controller="UsuarioAdmin" asp-action="VoltarPagina" asp-route-pagina="@ViewBag.pagina" asp-route-matricula="@ViewBag.matricula"><button type="button" class="btn btn-info form-control" onclick="mudarMetodo()">Voltar</button></a>
+                <a asp-controller="UsuarioAdmin" asp-action="VoltarPagina" asp-route-pagina="@GerenciadorDeViagem.WEB.Models.Enum.Pagina.IndexAdministrador" asp-route-matricula="@ViewBag.Matricula"><button type="button" class="btn btn-info form-control" onclick="mudarMetodo()">Voltar</button></a>
             </div>
         </form>
     </div>

@@ -3,9 +3,11 @@
     Layout = null;
 }
 
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Open+Sans&display=swap" rel="stylesheet">
+
 <style>
     :root {
         font-size: 62.5%;
@@ -70,6 +72,15 @@
             color: white;
         }
 
+    .mensagemNaTela {
+        opacity: 1;
+        transition: opacity 0.5s ease-out;
+    }
+
+    .escondido {
+        opacity: 0;
+    }
+
     @@media (min-width: 500px) {
         #Login {
             border: 1px solid black;
@@ -81,12 +92,19 @@
     
     <section id="Login">
         <form method="post" onsubmit="return verificarCampos()">
-            @if (Model)
+           
+            @if (ViewBag.LoginUsuario == GerenciadorDeViagem.WEB.Models.Enum.StatusLogin.SenhaAlteradaComSucesso)
             {
-                <div class="form-content">
-                    <label id="usuarioAlterado">Senha alterada com sucesso</label>
+                <div class="mensagemUsuario alert alert-success offset-3" role="alert">
+                    <p>Senha alterada com sucesso</p>
                 </div>
-                <br />
+               
+            }
+            @if(ViewBag.LoginUsuario == GerenciadorDeViagem.WEB.Models.Enum.StatusLogin.LoginErro)
+            {
+                <div class="mensagemUsuario alert alert-danger offset-3" role="alert">
+                    <p>Não foi possível atender sua solicitação, verifique sua informações ou contate o suporte <strong>Email: </strong><em>suporte@empresa.com</em></p>
+                </div>
             }
 
             <div class="form-content">
@@ -113,6 +131,9 @@
             </div>
 
             <br />
+            <div class="LoginSubmit trocarSenha">
+                <a asp-action="Login" asp-controller="Login"><input type="button" value="Voltar" /></a>
+            </div>
         </form>
     </section>
 </div>
@@ -120,23 +141,12 @@
 
 <script>
 
-    setTimeout(function () {
-        document.getElementById('usuarioAlterado').textContent = '';
-    }, 5000);
-
-    function senhaAlterada(alteradoComSucesso) {
-        if (alteradoComSucesso) {
-            alert('Senha alterada com sucesso');
-        }
-        else {
-            alert("erro ao tentar alterar sua senha");
-        }
-    }
     function verificarCampos() {
         var novaSenha = document.getElementById('Novasenha').value;
         var confirmacaoSenha = document.getElementById('NovasenhaConfirmacao').value;
         var matricula = document.getElementById('Matricula').value;
         var senha = document.getElementById('Senha').value;
+
 
         if (!validarMatricula(matricula)) {
             alert('Aviso: Matricula incorreta deve ter  6 caracteres. Por favor, verifique.');
@@ -158,7 +168,7 @@
     function validarSenha(senha) {
         
         var validaSenha = senha.trim().length;
-        return (validaSenha >= 6 && validaSenha <= 12 )
+        return (validaSenha >= 6 && validaSenha <= 15 )
     }
 
     function validarMatricula(matricula) {
@@ -171,4 +181,17 @@
 
         return (senhaNaoEVazia && novaSenha === confirmacaoSenha);
     }
+
+    setTimeout(function () {
+        var mensagensTela = document.getElementsByClassName('mensagemUsuario');
+
+        for (var i = 0; i < mensagensTela.length; i++) {
+            mensagensTela[i].style.display = 'none';
+        }
+
+        for (var i = 0; i < mensagensTela.length; i++) {
+            mensagensTela[i].classList.add('escondido');
+        }
+    }, 4000);
+
 </script>

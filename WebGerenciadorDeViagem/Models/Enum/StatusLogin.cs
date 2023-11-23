@@ -3,6 +3,7 @@
     public enum StatusLogin
     {
         LoginErro,
-        NaoFezLogin
+        NaoFezLogin,
+        SenhaAlteradaComSucesso
     }
 }

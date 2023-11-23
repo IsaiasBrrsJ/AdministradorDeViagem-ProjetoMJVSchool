@@ -1,7 +1,7 @@
 ﻿@model GerenciadorDeViagem.WEB.Models.Usuario
 
 @{
-    ViewData["Title"] = "Consultar Usuario";
+    ViewData["Title"] = "Consultar Usuário";
 }
 <style>
     .page-item.active .page-link {
@@ -19,6 +19,10 @@
     .escondido {
         opacity: 0;
     }
+
+    .botao {
+        width: 100%;
+    }
 </style>
 
 @{
@@ -26,7 +30,7 @@
 }
 
 
-<h1>Administrador</h1>
+<h3>Administrador</h3>
 
 @if (achouUsuario == GerenciadorDeViagem.WEB.Models.Enum.UsuarioEncontrado.UsuarioNaoEncontrado)
 {
@@ -40,23 +44,31 @@ else if (achouUsuario == GerenciadorDeViagem.WEB.Models.Enum.UsuarioEncontrado.M
         <p>Erro na matricula, deve ter 6 caracteres, contate o suporte ou tente novamente <strong>Email: </strong><em>suporte@empresa.com</em></p>
     </div>
 }
-<div class="row">
-    <div class="col-md-4">
-        <form id="formIndex" asp-action="DetalhesUsuario">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Matricula" class="control-label">Matriula</label>
-                <input id="matriculaId" asp-route-matricula="@Model.Matricula" asp-for="Matricula" class="form-control" placeholder="Informe a matricula para buscar" />
-                <span asp-validation-for="Matricula" class="text-danger"></span>
-            </div>
-            <br />
-            <br />
-            <div class="form-group">
-                <a><button type="submit" value="Buscar" class="btn btn-dark">Buscar Usuario</button></a>
-                <a asp-action="CadastrarUsuario" asp-route-pagina="@ViewBag.pagina" asp-route-matricula="@ViewBag.matricula"><button type="button" class="btn btn-dark" onclick="mudarMetodo()">Cadastrar Usuario</button></a>
-                <a asp-controller="UsuarioAdmin" asp-action="VoltarPagina" asp-route-pagina="@ViewBag.pagina" asp-route-matricula="@ViewBag.matricula"><button type="button" class="btn btn-info form-control" onclick="mudarMetodo()">Lista de Viagens</button></a>
-            </div>
-        </form>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <form id="formIndex" asp-action="DetalhesUsuario" asp-route-matriculaUserLogado="@ViewBag.Matricula" class="mt-4">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="form-group">
+                    <label asp-for="Matricula" class="control-label">Matrícula</label>
+                    <input id="matriculaId" asp-for="Matricula" value="" class="form-control" placeholder="Informe a matrícula para buscar" />
+                    <span asp-validation-for="Matricula" class="text-danger"></span>
+                </div>
+                <br />
+                <div class="form-group">
+                    <button type="submit" class="btn btn-dark btn-block botao">Buscar Usuário</button>
+                </div>
+                <br />
+                <div class="form-group">
+                    <a asp-controller="UsuarioAdmin" asp-action="VoltarPagina"
+                       asp-route-pagina="@GerenciadorDeViagem.WEB.Models.Enum.Pagina.IndexAdministrador"
+                       asp-route-matricula="@ViewBag.matricula">
+                        <button type="button" class="btn btn-info btn-block botao" onclick="mudarMetodo()">Voltar</button>
+                    </a>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 

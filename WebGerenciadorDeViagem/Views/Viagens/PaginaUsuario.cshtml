@@ -5,9 +5,7 @@
 }
 
 <h1>Viagens Agendadas</h1>
-@{
-    var matriculaUserLogado = Model.Select(e => e.MatriculaUserLogado);
-}
+
 <style>
     table {
         width: 100%;
@@ -18,30 +16,40 @@
     .table {
         overflow-x: auto
     }
+
     th, td {
         padding: 8px;
-
         text-align: left;
     }
 
-    @@media (max-width: 568px) {
-        thead{
-            display:none;
-        }
-    th, td {
-        display: block;
+    .page-item.active .page-link {
+        color: #fff;
+        background-color: black;
+        border-color: black;
+        border-radius: 3px;
+    }
+
+    .botao {
         width: 100%;
-        box-sizing: border-box;
     }
+    @@media (max-width: 568px) {
+        thead {
+            display: none;
+        }
 
-    th {
-        text-align: center;
+        th, td {
+            display: block;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        th {
+            text-align: center;
+        }
     }
-
-}
 </style>
 <div class="table">
-    <table  class="table table-striped table-hover table-sm" style="width:100%">
+    <table class="table table-striped table-hover table-sm" style="width:100%">
         <thead>
             <tr>
                 <th>
@@ -92,30 +100,30 @@
                         @Html.DisplayFor(modelItem => item.DataDaSolicitacao)
                     </td>
 
-                  
+
                     <td>
                         @Html.DisplayFor(modelItem => item.MatriculaAprovador)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.MatriculaSolicitante)
                     </td>
-                   
+
                     <td>
                         @if ((item.DataIda < DateTime.Now) && (item.StatusViagem == GerenciadorDeViagem.WEB.Models.Enum.StatusViagem.Pendente))
                         {
-                            <button disabled type="button" class="btn btn-danger">Tempo Excedido</button>
+                            <button disabled type="button" class="btn btn-danger btn-sm botao">Tempo Excedido</button>
                         }
                         else if (item.StatusViagem == GerenciadorDeViagem.WEB.Models.Enum.StatusViagem.Cancelada)
                         {
-                            <button disabled type="button" class="btn btn-danger">Viagem Cancelada</button>
+                            <button disabled type="button" class="btn btn-danger btn-sm botao">Viagem Cancelada</button>
                         }
                         else if (item.StatusViagem == GerenciadorDeViagem.WEB.Models.Enum.StatusViagem.Aprovado)
                         {
-                            <button disabled type="button" class="btn btn-success">Viagem Aprovada</button>
+                            <button disabled type="button" class="btn btn-success btn-sm botao">Viagem Aprovada</button>
                         }
                         else
                         {
-                            <button disabled type="button" class="btn btn.warning">Viagem Pendente </button>
+                            <button disabled type="button" class="btn btn-warning btn-sm botao">Em aprovação </button>
                         }
                     </td>
                 </tr>
@@ -123,13 +131,4 @@
         </tbody>
     </table>
 </div>
-<a asp-action="MarcarViagem" asp-route-matriculaUserLogado="@matriculaUserLogado"><button type="button" class="btn btn-dark">Marcar Viagem</button></a>
-<style>
-    .page-item.active .page-link {
-       
-        color: #fff;
-        background-color: black;
-        border-color: black;
-        border-radius: 3px;
-    }
-</style>
+<a asp-action="MarcarViagem" asp-route-matricula="@ViewBag.Matricula" asp-route-tipoDeUsuario="@GerenciadorDeViagem.WEB.Models.Enum.TipoDeUsuario.Usuario"><button type="button" class="btn btn-dark">Marcar Viagem</button></a>

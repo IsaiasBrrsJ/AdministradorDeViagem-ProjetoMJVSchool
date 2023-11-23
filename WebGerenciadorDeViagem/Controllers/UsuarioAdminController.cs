@@ -26,51 +26,55 @@ namespace GerenciadorDeViagem.WEB.Controllers
         {
             ViewBag.AchouUsuario = usuarioEncontrado;
             ViewBag.pagina = pagina;
-            ViewBag.matricula = matricula;
+            ViewBag.Matricula = matricula;
 
 
             return View(new Usuario());
         }
         
         
-        public async Task<IActionResult> DetalhesUsuario(int matricula)
+        public async Task<IActionResult> DetalhesUsuario(int matricula, int matriculaUserLogado = 0)
         {
-            if(matricula.ToString().Length == 6)
+
+            ViewBag.Matricula = matriculaUserLogado;
+
+            if (matricula.ToString().Length == 6)
             {
                 var usuarioSistema = await _administrador.ConsultarUsuario(matricula);
 
                 if (usuarioSistema is null)
-                    return RedirectToAction("Index", "UsuarioAdmin", new { usuarioEncontrado = UsuarioEncontrado.UsuarioNaoEncontrado});
+                    return RedirectToAction("Index", "UsuarioAdmin", new { usuarioEncontrado = UsuarioEncontrado.UsuarioNaoEncontrado, matricula = matriculaUserLogado });
                
 
 
                 return View(usuarioSistema);
             }
 
+          
 
-            return RedirectToAction("Index", "UsuarioAdmin", new { usuarioEncontrado = UsuarioEncontrado.MatriculaIncorreta});
+            return RedirectToAction("Index", "UsuarioAdmin", new { usuarioEncontrado = UsuarioEncontrado.MatriculaIncorreta, matricula = matriculaUserLogado });
         }
 
 
-        public async Task<IActionResult> CadastrarUsuario(SituacaoCadastro statusCadastro = SituacaoCadastro.CadastroPendente, Pagina pagina = Pagina.IndexConsultarUsuario, int matricula = 0)
+        public async Task<IActionResult> CadastrarUsuario(SituacaoCadastro statusCadastro = SituacaoCadastro.CadastroPendente, Pagina pagina = Pagina.IndexConsultarUsuario, int matriculaUseLogado = 0)
         {
 
              ViewBag.CadastrouComSucesso = statusCadastro;
              ViewBag.pagina = pagina;
-             ViewBag.matricula = matricula; 
+             ViewBag.Matricula = matriculaUseLogado; 
 
             return View(new Usuario());
         }
         public async Task<IActionResult> VoltarPagina(Pagina pagina = Pagina.IndexConsultarUsuario, int matricula = 0)
         {
             if (pagina == Pagina.IndexAdministrador)
-                return RedirectToAction("PaginaAdministrador", "Viagens", new {matricula = matricula});
+                return RedirectToAction("PaginaAdministrador", "Viagens", new { matricula });
 
 
-            return RedirectToAction("Index", "UsuarioAdmin");
+            return RedirectToAction("Index", "UsuarioAdmin", new { matricula });
         }
         [HttpPost, ActionName("CadastrarUsuarioConfirma")]
-        public async Task<IActionResult> CadastrarUsuarioConfirma([Bind("Matricula,NomeCompleto,Email,TipoDeUsuario")] Usuario usuario)
+        public async Task<IActionResult> CadastrarUsuarioConfirma([Bind("Matricula,NomeCompleto,Email,TipoDeUsuario")] Usuario usuario, int matriculaUseLogado = 0)
         {
             if (usuario == null)
                 return View(new Usuario());
@@ -78,7 +82,7 @@ namespace GerenciadorDeViagem.WEB.Controllers
             var situacaoCadastro = SituacaoCadastro.CadastroPendente;
 
 
-           var statusCadastro = await _administrador.CadatroUsuario(usuario);
+            var statusCadastro = await _administrador.CadatroUsuario(usuario);
 
             if (statusCadastro)
                 situacaoCadastro = SituacaoCadastro.CadastroRealizado;
@@ -86,7 +90,7 @@ namespace GerenciadorDeViagem.WEB.Controllers
                 situacaoCadastro = SituacaoCadastro.ErroNoCadastro;
 
 
-           return RedirectToAction("CadastrarUsuario", "UsuarioAdmin", new { statusCadastro = situacaoCadastro });
+           return RedirectToAction("CadastrarUsuario", "UsuarioAdmin", new { statusCadastro = situacaoCadastro, matriculaUseLogado });
         }
 
    
@@ -105,19 +109,13 @@ namespace GerenciadorDeViagem.WEB.Controllers
             return View(new Usuario());
         }
 
-        // GET: Usuarios/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-
-            return View(new Usuario());
-        }
-
         // POST: Usuarios/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        [HttpPost, ActionName("DeletarUsuario")]
+        public async Task<IActionResult> DeletarUsuario(int matricula)
         {
 
+            var retorno = await _administrador.DeletaUsuario(matricula);
+            
             return View(new Usuario());
         }
 

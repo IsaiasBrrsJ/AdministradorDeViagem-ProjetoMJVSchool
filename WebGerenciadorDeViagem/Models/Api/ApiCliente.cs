@@ -14,43 +14,76 @@ namespace GerenciadorDeViagem.WEB.Models.Api
         }
         public async Task<object> Obter(string endpoint)
         {
-            HttpResponseMessage response = await _httpClient.GetAsync(endpoint);
+            try
+            {
+                HttpResponseMessage response = await _httpClient.GetAsync(endpoint);
 
-            if (!response.IsSuccessStatusCode)
+                if (!response.IsSuccessStatusCode)
+                    return null!;
+
+
+                var dadosRetorno = response.Content.ReadAsStringAsync().Result;
+
+                return dadosRetorno;
+            }
+            catch
+            {
                 return null!;
-
-
-            var dadosRetorno = response.Content.ReadAsStringAsync().Result;
-
-            return dadosRetorno;
+            }
         }
 
         public async Task<object> Enviar(string endpoint, StringContent dados)
         {
-            
-            HttpResponseMessage response = await _httpClient.PostAsync(endpoint, dados);
+            try
+            {
+                HttpResponseMessage response = await _httpClient.PostAsync(endpoint, dados);
 
-            if (!response.IsSuccessStatusCode)
+                if (!response.IsSuccessStatusCode)
+                    return null!;
+
+                var dadosRetorno = response.Content.ReadAsStringAsync().Result;
+
+                return dadosRetorno;
+            }
+            catch
+            {
                 return null!;
-
-            var dadosRetorno = response.Content.ReadAsStringAsync().Result;
-
-            return dadosRetorno;
+            }
         }
 
         public async Task<bool> Atualizar(string endpoint, StringContent dados)
         {
-            HttpResponseMessage response = await _httpClient.PatchAsync(endpoint, dados);
+            try
+            {
+                HttpResponseMessage response = await _httpClient.PatchAsync(endpoint, dados);
 
-            if (!response.IsSuccessStatusCode)
+                if (!response.IsSuccessStatusCode)
+                    return false;
+
+                return true;
+            }
+            catch
+            {
                 return false;
-
-            return true;
-          
+            }
         }
-        public async Task Deletar(string endpoint)
+        public async Task<bool> Deletar(string endpoint)
         {
-            throw new NotImplementedException();
+            try
+            {
+                HttpResponseMessage response = await _httpClient.DeleteAsync(endpoint);
+
+                if (!response.IsSuccessStatusCode)
+                    return false;
+
+                var dadosRetorno =Convert.ToBoolean(response.Content.ReadAsStringAsync().Result);
+
+                return dadosRetorno;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
       

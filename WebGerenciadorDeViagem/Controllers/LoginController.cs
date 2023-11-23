@@ -1,6 +1,7 @@
 ﻿using GerenciadorDeViagem.WEB.Models;
 using GerenciadorDeViagem.WEB.Models.Api.Interfaces;
 using GerenciadorDeViagem.WEB.Models.Enum;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using static System.Net.Mime.MediaTypeNames;
 
@@ -23,9 +24,9 @@ namespace GerenciadorDeViagem.WEB.Controllers
             return View();
         }
 
-        public async Task<IActionResult> MudarSenha()
+        public async Task<IActionResult> MudarSenha(StatusLogin statusLoing = StatusLogin.NaoFezLogin)
         {
-            
+            ViewBag.LoginUsuario = statusLoing;
 
             return View();
         }
@@ -41,11 +42,11 @@ namespace GerenciadorDeViagem.WEB.Controllers
                 return RedirectToAction("Login", "Login", new { statusLoing  =StatusLogin.LoginErro });
 
 
-            if (usuario.TipoUsuario == Models.Enum.TipoDeUsuario.Administrador)
-                return RedirectToAction("PaginaAdministrador", "Viagens", new { matricula = usuario.Matricula});
+            if (usuario.TipoUsuario == TipoDeUsuario.Administrador)
+                return RedirectToAction("PaginaAdministrador", "Viagens", new { matricula = usuario.Matricula, tipoUsuario = TipoDeUsuario.Administrador });
             
-            else if (usuario.TipoUsuario == Models.Enum.TipoDeUsuario.Usuario)
-                return RedirectToAction("PaginaUsuario", "Viagens", new { matricula = usuario.Matricula});
+            else if (usuario.TipoUsuario == TipoDeUsuario.Usuario)
+                return RedirectToAction("PaginaUsuario", "Viagens", new { matricula = usuario.Matricula, tipoUsuario = TipoDeUsuario.Usuario });
            
             else
             return RedirectToAction("Index", "Home", usuario);
@@ -56,12 +57,20 @@ namespace GerenciadorDeViagem.WEB.Controllers
         [HttpPost]
         public async Task<IActionResult> MudarSenha([Bind("Matricula, Senha, NovaSenha")] AlterarSenhaUsuario usuarioLogin)
         {
-            var teste = await _loginApi.AlterarSenha(usuarioLogin.Matricula, usuarioLogin.Senha, usuarioLogin.NovaSenha);
+            var usuario = await _loginApi.AlterarSenha(usuarioLogin.Matricula, usuarioLogin.Senha, usuarioLogin.NovaSenha);
 
 
-            return View(teste);
+            if (usuario is false)
+                return RedirectToAction("MudarSenha", "Login", new { statusLoing = StatusLogin.LoginErro });
+
+
+            return RedirectToAction("MudarSenha", "Login", new { statusLoing = StatusLogin.SenhaAlteradaComSucesso});
         }
 
-
+     
+        public async Task<IActionResult> Sair()
+        {
+            return RedirectToAction("Login", "Login");
+        }
     }
 }

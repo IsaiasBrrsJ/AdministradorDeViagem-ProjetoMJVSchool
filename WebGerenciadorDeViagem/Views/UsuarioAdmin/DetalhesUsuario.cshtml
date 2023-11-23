@@ -1,13 +1,15 @@
 ﻿@model GerenciadorDeViagem.WEB.Models.Usuario
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Datelhes usuario";
 }
-
-<h1>Details</h1>
-
+<style>
+    .botao {
+        width: 100%;
+    }
+</style>
+<h3>Detalhes do usuário</h3>
 <div>
-    <h4>Usuario</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -38,5 +40,10 @@
 </div>
 <br />
 <div class="form-group">
-    <a asp-action="Index"><button type="button" class="btn btn-info form-control">Voltar</button></a>
+    <a asp-action="Index" asp-route-matricula="@ViewBag.Matricula"><button type="button" class="btn btn-info form-control botao">Voltar</button></a>
 </div>
+<br />
+<form asp-action="DeletarUsuario" asp-controller="UsuarioAdmin" method="post">
+    <input type="hidden" asp-for="Matricula" />
+    <button class="btn btn-info form-control botao" type="submit">Deletar</button>
+</form>

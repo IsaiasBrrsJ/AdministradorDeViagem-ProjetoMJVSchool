@@ -54,9 +54,18 @@ namespace GerenciadorDeViagem.WEB.Models.Api
             return dadosRetorno!;
         }
 
-        public Task DeletaUsuario(int matricula)
+        public async Task<bool> DeletaUsuario(int matricula)
         {
-            throw new NotImplementedException();
+            var endpoint = _administradorEndPoint.Value.DeletarUsuario + matricula;
+
+            var reposta = await _apiCliente.Deletar(endpoint);
+
+            if(reposta is false)
+                return false;
+
+            var dadosRetorno = JsonSerializer.Deserialize<bool>(reposta);
+
+            return dadosRetorno!;
         }
     }
 }

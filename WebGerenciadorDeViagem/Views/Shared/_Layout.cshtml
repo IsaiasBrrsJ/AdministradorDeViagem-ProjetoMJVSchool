@@ -13,6 +13,7 @@
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow md-3">
             <div class="container-fluid">
                 <h3 class="navbar-brand">Gerenciador De Viagens</h3>
+                <a asp-action="Sair" asp-controller="Login"><button>Sair</button></a>
             </div>
         </nav>
     </header>
@@ -33,3 +34,4 @@
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
+

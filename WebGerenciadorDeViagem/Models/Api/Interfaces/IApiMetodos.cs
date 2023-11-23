@@ -4,7 +4,7 @@
     {
         Task<Object> Obter(string endpoint);
         Task<Object> Enviar(string endpoint, StringContent dados);
-        Task Deletar(string endpoint);
+        Task<bool> Deletar(string endpoint);
         Task<bool> Atualizar(string endpoint, StringContent dados);
     }
 }

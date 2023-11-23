@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using GerenciadorDeViagem.WEB.Models;
 using GerenciadorDeViagem.WEB.Models.Api.Interfaces;
+using GerenciadorDeViagem.WEB.Models.Enum;
 
 namespace GerenciadorDeViagem.WEB.Controllers
 {
@@ -13,66 +14,83 @@ namespace GerenciadorDeViagem.WEB.Controllers
            _usuario = usuario;
         }
 
-        public async Task<IActionResult> PaginaAdministrador(int matricula)
+        public async Task<IActionResult> PaginaAdministrador(int matricula, TipoDeUsuario tipoUsuario)
         {
             var usuarioViagem = await _usuario.ObterViagemPorMatriculaListAsync(matricula);
 
-            foreach(var user in usuarioViagem)
-            {
-                user.MatriculaUserLogado =  matricula;
-            }
+            ViewBag.Matricula = matricula;
+            ViewBag.TipoUsuario = tipoUsuario;
 
             return View(usuarioViagem);
         }
 
-        public async Task<IActionResult> PaginaUsuario(int matricula)
+        public async Task<IActionResult> PaginaUsuario(int matricula, TipoDeUsuario tipoUsuario)
         {
-            var use = await _usuario.ObterViagemPorMatriculaListAsync(matricula);
+            var usuarioViagem = await _usuario.ObterViagemPorMatriculaListAsync(matricula); 
 
-            return View(use);
+            ViewBag.Matricula = matricula;
+            ViewBag.TipoUsuario = tipoUsuario;
+
+            return View(usuarioViagem);
         }
 
-        public async Task<IActionResult> Details(int? id)
-        {
-           
-            return View();
+       public async Task<IActionResult> VoltarPagina(int matricula, TipoDeUsuario tipoDeUsuario)
+       {
+            if(tipoDeUsuario == TipoDeUsuario.Administrador)
+                return RedirectToAction("PaginaAdministrador", "Viagens", new {matricula, tipoUsuario = tipoDeUsuario });
+
+
+            return RedirectToAction("PaginaUsuario", "Viagens", new {matricula, tipoUsuario = tipoDeUsuario });
         }
 
-      
-        public async Task<IActionResult> MarcarViagem(int matriculaUserLogado)
+        public async Task<IActionResult> MarcarViagem(int matricula, TipoDeUsuario tipoDeUsuario, SituacaoCadastro situacaoCadastro)
         {
+            ViewBag.MatriculaUserLogado = matricula;
+            ViewBag.TipoUsuario = tipoDeUsuario;
+            ViewBag.SituacaoCadastro = situacaoCadastro;
 
-            return View(new Viagem{ MatriculaUserLogado = matriculaUserLogado });
+            return View(new Viagem());
         }
 
         [HttpPost, ActionName("MarcarViagemConfirma")]
-        public async Task<IActionResult> MarcarViagemConfirma([Bind("Destino,DataIda,DataVolta,TipoTransporte,MatriculaAprovador,MatriculaSolicitante")] Viagem viagem)
+        public async Task<IActionResult> MarcarViagemConfirma([Bind("Destino,DataIda,DataVolta,TipoTransporte,MatriculaAprovador,MatriculaSolicitante")] Viagem viagem, TipoDeUsuario tipoDeUsuario)
         {
-            if (viagem.MatriculaAprovador.ToString().Length < 6)
-            {
-                ViewBag.MatriculaErrada = "Matricula deve ter 6 caracteres";
-                return View(viagem);
-            }
-            else if(viagem.MatriculaSolicitante == viagem.MatriculaAprovador)
-            {
-                ViewBag.MatriculaErrada = "Matricula do aprovador e solicitante não podem ser iguais";
 
-                return View(new Viagem { MatriculaUserLogado = viagem.MatriculaSolicitante });
-            }
-            
+            if(!ValidaViagem(viagem))
+                return RedirectToAction("MarcarViagem", "Viagens", new { matricula = viagem.MatriculaSolicitante, tipoDeUsuario, situacaoCadastro = SituacaoCadastro.ErroNoCadastro });
+
+            var cadastroRealizado =  await _usuario.CadastrarViagem(viagem);
+
+            if(!cadastroRealizado)
+                return RedirectToAction("MarcarViagem", "Viagens", new { matricula = viagem.MatriculaSolicitante, tipoDeUsuario, situacaoCadastro = SituacaoCadastro.ErroNoCadastro });
+
+
+            return RedirectToAction("MarcarViagem", "Viagens", new { matricula = viagem.MatriculaSolicitante, tipoDeUsuario, situacaoCadastro = SituacaoCadastro.CadastroRealizado });
+        }
+        private bool ValidaViagem(Viagem viagem)
+        {
             if (viagem == null)
-                return View();
+                return false;
 
+            else if (!(viagem.MatriculaAprovador.ToString().Length == 6)){
+                return false;
+            }
+            else if (viagem.MatriculaSolicitante == viagem.MatriculaAprovador){ 
+                return false;
+            }
+            else if (viagem.DataIda > viagem.DataVolta){ 
+                return false;
+            }
 
-            await _usuario.CadastrarViagem(viagem);
-            
-            return View(viagem);
+            return true;
         }
 
         public async Task<IActionResult> AprovarViagem(int id)
         {
             var usuarioViagem = await _usuario.ObterViagemPorIdAsync(id);
 
+            ViewBag.MatriculaAprovador = usuarioViagem.MatriculaAprovador;
+            
             return View(usuarioViagem);
         }
 
@@ -87,6 +105,8 @@ namespace GerenciadorDeViagem.WEB.Controllers
         public async Task<IActionResult> CancelarViagem(int id)
         {
             var usuarioViagem =await _usuario.ObterViagemPorIdAsync(id);
+
+            ViewBag.MatriculaAprovador = usuarioViagem.MatriculaAprovador;
 
             return View(usuarioViagem);
         }

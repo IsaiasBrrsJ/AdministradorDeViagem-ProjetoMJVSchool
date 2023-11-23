@@ -6,7 +6,7 @@ namespace GerenciadorDeViagem.WEB.Models.Api.Interfaces
     {
         Task<bool> CadatroUsuario(Usuario usuario);
         Task<Usuario> ConsultarUsuario(int matricula);
-        Task DeletaUsuario(int matricula);
+        Task<bool> DeletaUsuario(int matricula);
 
     }
 }
