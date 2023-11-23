@@ -13,7 +13,7 @@ namespace GerenciadorDeViagem.Controllers
     [ApiController]
     public class LoginController : ControllerBase
     {
-        private record UsuarioLogado(int Matricula,string Senha, TipoDeUsuario TipoUsuario);
+        public record UsuarioLogado(int Matricula,string Senha, TipoDeUsuario TipoUsuario);
         public record AlterarSenhaUsuario(string senha, string novaSenha);
 
         private readonly ILoginDal _loginDal;
@@ -32,7 +32,11 @@ namespace GerenciadorDeViagem.Controllers
 
             var usuarioLogado = new UsuarioLogado(usuarioBanco.Matricula, String.Empty, usuarioBanco.TipoUsuario);
 
+           await GerenciadorDeViagemLogs.LogLogin.GravaLogLogin(new GerenciadorDeViagemLogs.LogLogin.UsuarioLogado(usuarioBanco.Matricula, usuarioBanco.TipoUsuario.ToString()));
+
             var json = JsonSerializer.Serialize(usuarioLogado);
+            
+            
             return Ok(json);
 
         }
@@ -46,6 +50,7 @@ namespace GerenciadorDeViagem.Controllers
             if (senhaAlterada is false)
                 return BadRequest();
 
+            await GerenciadorDeViagemLogs.LogLogin.GravaLogAlteracaoDeSenha(matricula);
 
             return Ok(new { Ok = "Senha alterada com sucesso" });
         }

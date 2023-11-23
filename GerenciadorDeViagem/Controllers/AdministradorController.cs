@@ -24,11 +24,14 @@ namespace GerenciadorDeViagem.Controllers
         public async Task<IActionResult> CadastroUsuario([Bind(nameof(usuario.Matricula), nameof(usuario.NomeCompleto),
         nameof(usuario.Email), nameof(usuario.TipoDeUsuario))] Usuario usuario)
         {
-           
+
+       
             var cadastrouNoSistema = await _administradorDal.CriaUsuarioNoSistema(usuario);
 
             if (cadastrouNoSistema is false)
                 return BadRequest(new {BadRequest = "Erro ao cadastrar usuário"});
+
+            await GerenciadorDeViagemLogs.LogsAcaosAdministrador.GravaLogCadastroNoSistema(usuario.Matricula);
 
             return Ok(cadastrouNoSistema);
        
@@ -55,6 +58,8 @@ namespace GerenciadorDeViagem.Controllers
 
             if (usuarioDeletado is false)
                 return BadRequest();
+
+            await GerenciadorDeViagemLogs.LogsAcaosAdministrador.GravaLogDeleteNoSistema(matricula);
 
             return Ok(usuarioDeletado);
         }

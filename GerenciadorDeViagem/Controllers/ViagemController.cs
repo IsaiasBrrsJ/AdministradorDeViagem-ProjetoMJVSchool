@@ -55,6 +55,8 @@ namespace GerenciadorDeViagem.Controllers
                 return BadRequest();
 
 
+            await GerenciadorDeViagemLogs.LogsAcaosAdministrador.GravaLogCadastroViagemNoSistema(viagem.MatriculaSolicitante);
+            
             return Ok(viagemCadastrada);
         }
         [HttpPatch("CancelaViagem/{Id}")]
@@ -64,6 +66,9 @@ namespace GerenciadorDeViagem.Controllers
 
             if(viagemCancelada is false)
                 return NotFound();
+
+
+            await GerenciadorDeViagemLogs.LogsAcaosAdministrador.GravaLogViagemCanceladaNoSistema(Id);
 
             return Ok(viagemCancelada);
         }
@@ -75,6 +80,9 @@ namespace GerenciadorDeViagem.Controllers
 
             if (viagemAprovada is false)
                 return NotFound();
+
+            await GerenciadorDeViagemLogs.LogsAcaosAdministrador.GravaLogAprovacaoViagemNoSistema(Id);
+
 
             return Ok(viagemAprovada);
         }

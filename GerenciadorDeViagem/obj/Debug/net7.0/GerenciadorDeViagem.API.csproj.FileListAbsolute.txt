@@ -65,3 +65,5 @@ C:\Users\Administrador\OneDrive - UFN - Universidade Franciscana\Aula-C#\Gerenci
 C:\Users\Administrador\OneDrive - UFN - Universidade Franciscana\Aula-C#\GerenciadorDeViagem\obj\Debug\net7.0\GerenciadorDeViagem.API.pdb
 C:\Users\Administrador\OneDrive - UFN - Universidade Franciscana\Aula-C#\GerenciadorDeViagem\obj\Debug\net7.0\GerenciadorDeViagem.API.genruntimeconfig.cache
 C:\Users\Administrador\OneDrive - UFN - Universidade Franciscana\Aula-C#\GerenciadorDeViagem\obj\Debug\net7.0\ref\GerenciadorDeViagem.API.dll
+C:\Users\Administrador\OneDrive - UFN - Universidade Franciscana\Aula-C#\GerenciadorDeViagem\bin\Debug\net7.0\GerenciadorDeViagemLogs.dll
+C:\Users\Administrador\OneDrive - UFN - Universidade Franciscana\Aula-C#\GerenciadorDeViagem\bin\Debug\net7.0\GerenciadorDeViagemLogs.pdb

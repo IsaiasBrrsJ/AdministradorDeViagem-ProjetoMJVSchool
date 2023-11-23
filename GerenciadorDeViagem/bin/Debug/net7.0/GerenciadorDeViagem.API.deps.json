@@ -10,7 +10,8 @@
         "dependencies": {
           "Microsoft.AspNetCore.OpenApi": "7.0.13",
           "Microsoft.Data.SqlClient": "5.1.2",
-          "Swashbuckle.AspNetCore": "6.5.0"
+          "Swashbuckle.AspNetCore": "6.5.0",
+          "GerenciadorDeViagemLogs": "1.0.0.0"
         },
         "runtime": {
           "GerenciadorDeViagem.API.dll": {}
@@ -463,6 +464,14 @@
             "fileVersion": "6.0.21.52210"
           }
         }
+      },
+      "GerenciadorDeViagemLogs/1.0.0.0": {
+        "runtime": {
+          "GerenciadorDeViagemLogs.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
       }
     }
   },
@@ -800,6 +809,11 @@
       "sha512": "sha512-IXoJOXIqc39AIe+CIR7koBtRGMiCt/LPM3lI+PELtDIy9XdyeSrwXFdWV9dzJ2Awl0paLWUaknLxFQ5HpHZUog==",
       "path": "system.windows.extensions/6.0.0",
       "hashPath": "system.windows.extensions.6.0.0.nupkg.sha512"
+    },
+    "GerenciadorDeViagemLogs/1.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
     }
   }
 }
